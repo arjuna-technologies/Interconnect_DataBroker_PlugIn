@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--                                                                                                     -->
+<!-- Copyright (c) 2014, Arjuna Technologies Limited, Newcastle-upon-Tyne, England. All rights reserved. -->
+<!--                                                                                                     -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.arjuna.dbplugins.interconnect</groupId>
+        <artifactId>interconnect-plugin-parent</artifactId>
+        <version>1.0.0p1m1</version>
+    </parent>
+
+    <artifactId>interconnect-plugin-ear</artifactId>
+
+    <packaging>ear</packaging>
+
+    <name>Interconnect DataBroker Plugin EAR</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-plugin</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-webservice</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-webservice-endpoint</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <configuration>
+                    <includeLibInApplicationXml>true</includeLibInApplicationXml>
+                    <modules>
+                        <ejbModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-plugin</artifactId>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-webservice</artifactId>
+                        </ejbModule>
+                        <webModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-webservice-endpoint</artifactId>
+                            <contextRoot>data_interconnect</contextRoot>
+                        </webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>jbossas</id>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jboss.as.plugins</groupId>
+                        <artifactId>jboss-as-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>deploy</goal>
+                                </goals>
+                            </execution>
+                       </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+</project>
