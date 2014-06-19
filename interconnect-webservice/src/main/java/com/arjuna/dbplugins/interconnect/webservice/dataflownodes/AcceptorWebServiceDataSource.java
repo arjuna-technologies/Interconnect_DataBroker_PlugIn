@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -23,6 +22,8 @@ public class AcceptorWebServiceDataSource implements DataSource
 {
     private static final Logger logger = Logger.getLogger(AcceptorWebServiceDataSource.class.getName());
 
+    public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
+
     public AcceptorWebServiceDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "AcceptorWebServiceDataSource: " + name + ", " + properties);
@@ -30,20 +31,20 @@ public class AcceptorWebServiceDataSource implements DataSource
         _name       = name;
         _properties = properties;
 
-        _id           = UUID.randomUUID().toString();
+        _endpointPath = properties.get(ENDPOINTPATH_PROPERTYNAME);
         _dataProvider = new BasicDataProvider<Document>(this);
     }
 
     @PostConstruct
     public void doRegister()
     {
-        _acceptorWebServiceDispatcher.register(_id, this);
+        _acceptorWebServiceDispatcher.register(_endpointPath, this);
     }
 
     @PreDestroy
     public void doUnregister()
     {
-        _acceptorWebServiceDispatcher.unregister(_id);
+        _acceptorWebServiceDispatcher.unregister(_endpointPath);
     }
 
     @Override
@@ -89,7 +90,8 @@ public class AcceptorWebServiceDataSource implements DataSource
     private Map<String, String>    _properties;
     private DataProvider<Document> _dataProvider;
 
-    private String _id;
+    private String _endpointPath;
+
     @EJB
     private AcceptorWebServiceDispatcher _acceptorWebServiceDispatcher;
 }

@@ -87,7 +87,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINE, "Request: " + requestOutputStream.toString());
+                logger.log(Level.FINE, "PullWebServiceDataSource.run: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -100,7 +100,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.FINE, "Responce: " + responceOutputStream.toString());
+                logger.log(Level.FINE, "PullWebServiceDataSource.run: responce: " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
 

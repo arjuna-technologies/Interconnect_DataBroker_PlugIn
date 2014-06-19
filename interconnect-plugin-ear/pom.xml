@@ -21,6 +21,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.arjuna.databroker</groupId>
+            <artifactId>data-common</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.databroker</groupId>
+            <artifactId>control-core</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-plugin</artifactId>
             <version>1.0.0p1m1</version>
@@ -48,6 +60,15 @@
                 <configuration>
                     <includeLibInApplicationXml>true</includeLibInApplicationXml>
                     <modules>
+                        <jarModule>
+                            <groupId>com.arjuna.databroker</groupId>
+                            <artifactId>data-common</artifactId>
+                            <includeInApplicationXml>true</includeInApplicationXml>
+                        </jarModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.databroker</groupId>
+                            <artifactId>control-core</artifactId>
+                        </ejbModule>
                         <ejbModule>
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
                             <artifactId>interconnect-plugin</artifactId>
