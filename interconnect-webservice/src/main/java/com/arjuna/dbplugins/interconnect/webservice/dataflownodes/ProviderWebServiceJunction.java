@@ -18,9 +18,9 @@ public class ProviderWebServiceJunction
 
     public ProviderWebServiceJunction()
     {
-        logger.log(Level.FINE, "ProviderWebServiceJunction");
+        logger.log(Level.INFO, "ProviderWebServiceJunction"); // TODO: INFO -> FINE
 
-        _syncObject                      = new Object();
+        _syncObject  = new Object();
         _documentMap = new HashMap<String, Document>();
     }
 

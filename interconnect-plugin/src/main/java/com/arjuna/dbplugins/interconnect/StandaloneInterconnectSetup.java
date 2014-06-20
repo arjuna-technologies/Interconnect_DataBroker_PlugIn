@@ -30,6 +30,10 @@ public class StandaloneInterconnectSetup
     {
         try
         {
+            Thread.sleep(10000);
+
+            logger.fine("################");
+
             String              acceptorName       = "Acceptor Name";
             Map<String, String> acceptorProperties = new HashMap<String, String>();
             acceptorProperties.put(AcceptorWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME, "TestPath");
@@ -55,15 +59,19 @@ public class StandaloneInterconnectSetup
 
             Thread.sleep(10000);
 
+            logger.fine("################");
+
             String              pullName       = "Pull Name";
             Map<String, String> pullProperties = new HashMap<String, String>();
             pullProperties.put(PullWebServiceDataSource.SERVICEURL_PROPERTYNAME, "http://localhost:80");
+            pullProperties.put(PullWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME, "TestPath");
+            pullProperties.put(PullWebServiceDataSource.SCHEDULEDELAY_PROPERTYNAME, "1000");
+            pullProperties.put(PullWebServiceDataSource.SCHEDULEPERIOD_PROPERTYNAME, "10000");
             PullWebServiceDataSource pullWebServiceDataSource = new PullWebServiceDataSource(pullName, pullProperties);
 
             String              providerName       = "Provider Name";
             Map<String, String> providerProperties = new HashMap<String, String>();
-            providerProperties.put(ProviderWebServiceDataSink.SERVICEURL_PROPERTYNAME, "http://localhost:80");
-            providerProperties.put(ProviderWebServiceDataSink.SERVICEURL_PROPERTYNAME, "http://localhost:80");
+            providerProperties.put(ProviderWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME, "TestPath");
             ProviderWebServiceDataSink providerWebServiceDataSink = new ProviderWebServiceDataSink(providerName, providerProperties);
 
             DocumentBuilderFactory document2BuilderFactory = DocumentBuilderFactory.newInstance();
@@ -79,6 +87,8 @@ public class StandaloneInterconnectSetup
             logger.fine("****************");
 
             Thread.sleep(10000);
+
+            logger.fine("################");
         }
         catch (Throwable throwable)
         {

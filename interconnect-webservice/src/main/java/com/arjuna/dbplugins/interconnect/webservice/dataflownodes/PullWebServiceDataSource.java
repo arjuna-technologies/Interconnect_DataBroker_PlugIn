@@ -19,6 +19,7 @@ import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPConstants;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
@@ -30,11 +31,10 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
 {
     private static final Logger logger = Logger.getLogger(PullWebServiceDataSource.class.getName());
 
-    public static final String SERVICEURL_PROPERTYNAME         = "Service URL";
-    public static final String OPERATIONNAMESPACE_PROPERTYNAME = "Operation Namespace";
-    public static final String OPERATIONNAME_PROPERTYNAME      = "Operation Name";
-    public static final String SCHEDULEDELAY_PROPERTYNAME      = "Schedule Delay";
-    public static final String SCHEDULEPERIOD_PROPERTYNAME     = "Schedule Period";
+    public static final String SERVICEURL_PROPERTYNAME     = "Service URL";
+    public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
+    public static final String SCHEDULEDELAY_PROPERTYNAME  = "Schedule Delay";
+    public static final String SCHEDULEPERIOD_PROPERTYNAME = "Schedule Period";
 
     public PullWebServiceDataSource(String name, Map<String, String> properties)
     {
@@ -46,8 +46,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
         _dataProvider = new BasicDataProvider<Document>(this);
 
         _serviceURL         = properties.get(SERVICEURL_PROPERTYNAME);
-        _operationNamespace = properties.get(OPERATIONNAMESPACE_PROPERTYNAME);
-        _operationName      = properties.get(OPERATIONNAME_PROPERTYNAME);
+        _endpointPath       = properties.get(ENDPOINTPATH_PROPERTYNAME);
         _scheduleDelay      = Long.parseLong(properties.get(SCHEDULEDELAY_PROPERTYNAME));
         _schedulePeriod     = Long.parseLong(properties.get(SCHEDULEPERIOD_PROPERTYNAME));
 
@@ -55,6 +54,11 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
         _timer.scheduleAtFixedRate(this, _scheduleDelay, _schedulePeriod);
     }
 
+    public void deactivateTimer()
+    {
+        _timer.cancel();
+    }
+    
     @Override
     public String getName()
     {
@@ -75,13 +79,14 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
         Document result = null;
         try
         {
-            MessageFactory messageFactory  = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-            SOAPMessage    request         = messageFactory.createMessage();
-            SOAPPart       requestPart     = request.getSOAPPart();
-            SOAPEnvelope   requestEnvelope = requestPart.getEnvelope();
-            SOAPBody       requestBody     = requestEnvelope.getBody();
-            requestEnvelope.addNamespaceDeclaration("oper", _operationNamespace);
-            requestBody.addBodyElement(requestEnvelope.createQName(_operationName, "oper"));
+            MessageFactory messageFactory   = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
+            SOAPMessage    request          = messageFactory.createMessage();
+            SOAPPart       requestPart      = request.getSOAPPart();
+            SOAPEnvelope   requestEnvelope  = requestPart.getEnvelope();
+            SOAPBody       requestBody      = requestEnvelope.getBody();
+            SOAPElement    requestElement   = requestBody.addChildElement(CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_OBTAINDATA, "ic", CommonDefs.INTERCONNECT_NAMESPACE);
+            SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_PARAMETERNAME_ID, "ic");
+            requestParameter.addTextNode(_endpointPath);
 
             if (logger.isLoggable(Level.FINE))
             {
@@ -94,7 +99,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             SOAPConnectionFactory connectionFactory = SOAPConnectionFactory.newInstance();
             SOAPConnection        connection        = connectionFactory.createConnection();
 
-            SOAPMessage responce = connection.call(request, _serviceURL);
+            SOAPMessage responce = connection.call(request, _serviceURL+ "/" + CommonDefs.INTERCONNECT_SERVICE_PATH + "/" + CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER);
 
             if (logger.isLoggable(Level.FINE))
             {
@@ -145,8 +150,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
     }
 
     private String _serviceURL;
-    private String _operationNamespace;
-    private String _operationName;
+    private String _endpointPath;
     private Long   _scheduleDelay;
     private Long   _schedulePeriod;
 

@@ -83,8 +83,7 @@ public class WebServiceDataFlowNodeFactory implements DataFlowNodeFactory
                 if (type.equals("Pull"))
                 {
                     propertyNames.add(PullWebServiceDataSource.SERVICEURL_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.OPERATIONNAMESPACE_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.OPERATIONNAME_PROPERTYNAME);
+                    propertyNames.add(PullWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME);
                     propertyNames.add(PullWebServiceDataSource.SCHEDULEDELAY_PROPERTYNAME);
                     propertyNames.add(PullWebServiceDataSource.SCHEDULEPERIOD_PROPERTYNAME);
                 }
@@ -113,11 +112,7 @@ public class WebServiceDataFlowNodeFactory implements DataFlowNodeFactory
                     propertyNames.add(PushWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
                 }
                 else if (type.equals("Provider"))
-                {
-                    propertyNames.add(ProviderWebServiceDataSink.SERVICEURL_PROPERTYNAME);
-                    propertyNames.add(ProviderWebServiceDataSink.OPERATIONNAMESPACE_PROPERTYNAME);
-                    propertyNames.add(ProviderWebServiceDataSink.OPERATIONNAME_PROPERTYNAME);
-                }
+                    propertyNames.add(ProviderWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Push' or 'Provider'", "Type", type);
 
