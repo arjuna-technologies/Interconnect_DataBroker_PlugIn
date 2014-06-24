@@ -58,7 +58,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
     {
         _timer.cancel();
     }
-    
+
     @Override
     public String getName()
     {
@@ -88,11 +88,11 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_PARAMETERNAME_ID, "ic");
             requestParameter.addTextNode(_endpointPath);
 
-            if (logger.isLoggable(Level.FINE))
+            if (logger.isLoggable(Level.FINER))
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINE, "PullWebServiceDataSource.run: request = " + requestOutputStream.toString());
+                logger.log(Level.FINER, "PullWebServiceDataSource.run: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -101,11 +101,11 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
 
             SOAPMessage responce = connection.call(request, _serviceURL+ "/" + CommonDefs.INTERCONNECT_SERVICE_PATH + "/" + CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER);
 
-            if (logger.isLoggable(Level.FINE))
+            if (logger.isLoggable(Level.FINER))
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.FINE, "PullWebServiceDataSource.run: responce: " + responceOutputStream.toString());
+                logger.log(Level.FINER, "PullWebServiceDataSource.run: responce: " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
 
@@ -113,7 +113,8 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             SOAPEnvelope responceEnvelope = responcePart.getEnvelope();
             SOAPBody     responceBody     = responceEnvelope.getBody();
 
-            result = responceBody.extractContentAsDocument();
+            if (responceBody.hasChildNodes())
+                result = responceBody.extractContentAsDocument();
         }
         catch (Throwable throwable)
         {

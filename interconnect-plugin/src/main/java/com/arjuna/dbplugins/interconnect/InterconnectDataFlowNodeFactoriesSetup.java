@@ -9,12 +9,13 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.EJB;
 import javax.ejb.Singleton;
+import javax.ejb.Startup;
 //import javax.ejb.Startup;
 import com.arjuna.databroker.data.DataFlowNodeFactory;
 import com.arjuna.databroker.data.DataFlowNodeFactoryInventory;
 import com.arjuna.dbplugins.interconnect.webservice.WebServiceDataFlowNodeFactory;
 
-//@Startup
+@Startup
 @Singleton
 public class InterconnectDataFlowNodeFactoriesSetup
 {
@@ -32,6 +33,6 @@ public class InterconnectDataFlowNodeFactoriesSetup
         _dataFlowNodeFactoryInventory.removeDataFlowNodeFactory("WebService Interconnect Data Flow Node Factories");
     }
 
-    @EJB(lookup="java:global/interconnect-plugin-ear-1.0.0p1m1/control-core-1.0.0p1m1/DataFlowNodeFactoryInventory")
+    @EJB(lookup="java:global/server-ear-1.0.0p1m1/control-core-1.0.0p1m1/DataFlowNodeFactoryInventory")
     private DataFlowNodeFactoryInventory _dataFlowNodeFactoryInventory;
 }

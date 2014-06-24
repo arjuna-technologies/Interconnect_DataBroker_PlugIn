@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
+import javax.naming.InitialContext;
 import org.w3c.dom.Document;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataSink;
@@ -32,6 +32,15 @@ public class ProviderWebServiceDataSink implements DataSink
         _dataConsumer = new BasicDataConsumer<Document>(this, "consume", Document.class);
 
         _endpointId = properties.get(ENDPOINTPATH_PROPERTYNAME);
+        
+        try
+        {
+            _providerWebServiceJunction = (ProviderWebServiceJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-webservice-1.0.0p1m1/ProviderWebServiceJunction");
+        }
+        catch (Throwable throwable)
+        {
+            logger.log(Level.WARNING, "ProviderWebServiceDataSink: no providerWebServiceJunction found", throwable);
+        }
     }
 
     @Override
@@ -50,7 +59,10 @@ public class ProviderWebServiceDataSink implements DataSink
     {
         logger.log(Level.FINE, "ProviderWebServiceDataSink.consume");
 
-        _providerWebServiceJunction.deposit(_endpointId, data);
+        if (_providerWebServiceJunction != null)
+            _providerWebServiceJunction.deposit(_endpointId, data);
+        else
+            logger.log(Level.WARNING, "ProviderWebServiceDataSink.consume: no providerWebServiceJunction");
     }
 
     @Override
@@ -79,6 +91,5 @@ public class ProviderWebServiceDataSink implements DataSink
     private Map<String, String>    _properties;
     private DataConsumer<Document> _dataConsumer;
 
-    @EJB
     private ProviderWebServiceJunction _providerWebServiceJunction;
 }

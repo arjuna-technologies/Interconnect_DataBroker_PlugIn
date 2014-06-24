@@ -11,9 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
-import javax.ejb.EJB;
+import javax.naming.InitialContext;
 import org.w3c.dom.Document;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
@@ -33,18 +31,20 @@ public class AcceptorWebServiceDataSource implements DataSource
 
         _endpointPath = properties.get(ENDPOINTPATH_PROPERTYNAME);
         _dataProvider = new BasicDataProvider<Document>(this);
-    }
 
-    @PostConstruct
-    public void doRegister()
-    {
-        _acceptorWebServiceDispatcher.register(_endpointPath, this);
-    }
+        try
+        {
+            _acceptorWebServiceDispatcher = (AcceptorWebServiceDispatcher) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-webservice-1.0.0p1m1/AcceptorWebServiceDispatcher");
+        }
+        catch (Throwable throwable)
+        {
+            logger.log(Level.WARNING, "AcceptorWebServiceDataSource: no acceptorWebServiceDispatcher found", throwable);
+        }
 
-    @PreDestroy
-    public void doUnregister()
-    {
-        _acceptorWebServiceDispatcher.unregister(_endpointPath);
+        if (_acceptorWebServiceDispatcher != null)
+            _acceptorWebServiceDispatcher.register(_endpointPath, this);
+        else
+            logger.log(Level.WARNING, "AcceptorWebServiceDataSource.doRegister: no acceptorWebServiceDispatcher");
     }
 
     @Override
@@ -92,6 +92,5 @@ public class AcceptorWebServiceDataSource implements DataSource
 
     private String _endpointPath;
 
-    @EJB
     private AcceptorWebServiceDispatcher _acceptorWebServiceDispatcher;
 }

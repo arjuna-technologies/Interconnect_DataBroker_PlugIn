@@ -28,12 +28,14 @@ public class AcceptorWebServiceDispatcher
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "AcceptorWebServiceDataSource.dispatch: " + id);
+            logger.log(Level.FINE, "AcceptorWebServiceDispatcher.dispatch: " + id);
 
             AcceptorWebServiceDataSource acceptorWebServiceDataSource = _acceptorWebServiceDataSourceMap.get(id);
 
             if (acceptorWebServiceDataSource != null)
                 acceptorWebServiceDataSource.dispatch(document);
+            else
+                logger.log(Level.FINE, "AcceptorWebServiceDispatcher.dispatch: unable to find 'acceptor webservice data source': " + id);
         }
     }
 
@@ -41,9 +43,9 @@ public class AcceptorWebServiceDispatcher
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "AcceptorWebServiceDataSource.register: " + id);
+            logger.log(Level.FINE, "AcceptorWebServiceDispatcher.register: " + id);
 
-            if (_acceptorWebServiceDataSourceMap.containsKey(id))
+            if (! _acceptorWebServiceDataSourceMap.containsKey(id))
             {
                 _acceptorWebServiceDataSourceMap.put(id, acceptorWebServiceDataSource);
                 return true;
@@ -57,7 +59,7 @@ public class AcceptorWebServiceDispatcher
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "AcceptorWebServiceDataSource.unregister: " + id);
+            logger.log(Level.FINE, "AcceptorWebServiceDispatcher.unregister: " + id);
 
             return _acceptorWebServiceDataSourceMap.remove(id) != null;
         }

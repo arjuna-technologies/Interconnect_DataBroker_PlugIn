@@ -47,11 +47,11 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
 
         try
         {
-            if (logger.isLoggable(Level.FINE))
+            if (logger.isLoggable(Level.FINER))
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke: request = " + requestOutputStream.toString());
+                logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -83,11 +83,11 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
                 MessageFactory responceFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
                 SOAPMessage    responce        = responceFactory.createMessage();
 
-                if (logger.isLoggable(Level.FINE))
+                if (logger.isLoggable(Level.FINER))
                 {
                     ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                     responce.writeTo(responceOutputStream);
-                    logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
+                    logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
                     responceOutputStream.close();
                 }
 
