@@ -23,8 +23,13 @@
         <jboss-as.hostname>databroker</jboss-as.hostname>
         <jboss-as.domain>standalone-full</jboss-as.domain>
 
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <wildfly.username>username</wildfly.username>
+        <wildfly.password>password</wildfly.password>
+        <wildfly.hostname>databroker</wildfly.hostname>
+        <wildfly.domain>standalone</wildfly.domain>
+
+        <maven.compiler.source>1.7</maven.compiler.source>
+        <maven.compiler.target>1.7</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -84,6 +89,12 @@
                 <groupId>org.jboss.as.plugins</groupId>
                 <artifactId>jboss-as-maven-plugin</artifactId>
                 <version>7.5.Final</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>1.0.2.Final</version>
             </plugin>
         </plugins>
     </build>
