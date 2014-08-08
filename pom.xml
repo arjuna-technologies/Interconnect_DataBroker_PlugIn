@@ -32,6 +32,15 @@
         <maven.compiler.target>1.7</maven.compiler.target>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- JBossAS-7.1.1.Final
+        <ejb-api.version>3.1</ejb-api.version>
+        <jee.version>6</jee.version>
+        -->
+        <!-- WildFly-8.1.0.Final -->
+        <ejb-api.version>3.2</ejb-api.version>
+        <jee.version>7</jee.version>
+        <!--  -->
     </properties>
 
     <modules>
@@ -41,12 +50,29 @@
         <module>interconnect-plugin-ear</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>JBoss repository</id>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
+             <!-- JBossAS-7.1.1.Final
             <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-dist</artifactId>
                 <version>7.1.1.Final</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            -->
+            <!-- WildFly-8.1.0.Final -->
+            <dependency>
+                <groupId>org.wildfly</groupId>
+                <artifactId>wildfly-dist</artifactId>
+                <version>8.1.0.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -63,10 +89,16 @@
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.5</version>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ejb-plugin</artifactId>
                 <version>2.3</version>
                 <configuration>
-                    <ejbVersion>3.1</ejbVersion>
+                    <ejbVersion>${ejb-api.version}</ejbVersion>
                 </configuration>
             </plugin>
 
@@ -81,7 +113,7 @@
                 <artifactId>maven-ear-plugin</artifactId>
                 <version>2.9</version>
                 <configuration>
-                    <version>6</version>
+                    <version>${jee.version}</version>
                 </configuration>
             </plugin>
 

@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
+import org.risbic.intraconnect.basic.BasicDataProvider;
 import org.w3c.dom.Document;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;

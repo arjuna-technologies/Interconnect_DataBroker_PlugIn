@@ -42,6 +42,7 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
         logger.log(Level.FINE, "ProviderWebServiceProvider");
     }
 
+    @SuppressWarnings("unchecked")
     @WebMethod
     public SOAPMessage invoke(SOAPMessage request)
     {

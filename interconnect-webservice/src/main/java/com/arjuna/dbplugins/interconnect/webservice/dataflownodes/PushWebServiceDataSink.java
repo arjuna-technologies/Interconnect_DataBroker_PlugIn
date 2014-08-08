@@ -21,6 +21,7 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.risbic.intraconnect.basic.BasicDataConsumer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import com.arjuna.databroker.data.DataConsumer;
