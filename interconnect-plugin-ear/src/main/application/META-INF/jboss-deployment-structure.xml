@@ -14,12 +14,7 @@
     <sub-deployment name="interconnect-webservice-1.0.0p1m1.jar">
         <dependencies>
             <module name="deployment.databroker.ear.data-common.jar"/>
-            <module name="deployment.dataflow-utils.ear.intraconnect-basic.jar"/>
-        </dependencies>
-    </sub-deployment>
-    <sub-deployment name="interconnect-webservice-endpoint-1.0.0p1m1.war">
-        <dependencies>
-            <module name="deployment.databroker.ear.data-common.jar"/>
+            <module name="deployment.databroker.ear.data-common-jee.jar"/>
         </dependencies>
     </sub-deployment>
 </jboss-deployment-structure>

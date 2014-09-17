@@ -12,10 +12,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
-import org.risbic.intraconnect.basic.BasicDataProvider;
 import org.w3c.dom.Document;
+import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
+import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
 
 public class AcceptorWebServiceDataSource implements DataSource
 {
@@ -31,7 +32,6 @@ public class AcceptorWebServiceDataSource implements DataSource
         _properties = properties;
 
         _endpointPath = properties.get(ENDPOINTPATH_PROPERTYNAME);
-        _dataProvider = new BasicDataProvider<Document>(this);
 
         try
         {
@@ -49,15 +49,39 @@ public class AcceptorWebServiceDataSource implements DataSource
     }
 
     @Override
+    public DataFlow getDataFlow()
+    {
+    	return _dataFlow;
+    }
+
+    @Override
+    public void setDataFlow(DataFlow dataFlow)
+    {
+    	_dataFlow = dataFlow;
+    }
+
+    @Override
     public String getName()
     {
         return _name;
     }
 
     @Override
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(_properties);
+    }
+
+    @Override
+    public void setProperties(Map<String, String> properties)
+    {
+        _properties = properties;
     }
 
     public void dispatch(Document document)
@@ -87,8 +111,10 @@ public class AcceptorWebServiceDataSource implements DataSource
             return null;
     }
 
+    private DataFlow               _dataFlow;
     private String                 _name;
     private Map<String, String>    _properties;
+    @DataProviderInjection
     private DataProvider<Document> _dataProvider;
 
     private String _endpointPath;

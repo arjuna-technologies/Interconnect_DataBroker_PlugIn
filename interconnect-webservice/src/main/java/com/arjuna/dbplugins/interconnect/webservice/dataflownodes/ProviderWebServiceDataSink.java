@@ -12,10 +12,11 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.naming.InitialContext;
-import org.risbic.intraconnect.basic.BasicDataConsumer;
 import org.w3c.dom.Document;
 import com.arjuna.databroker.data.DataConsumer;
+import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
+import com.arjuna.databroker.data.jee.annotation.DataConsumerInjection;
 
 public class ProviderWebServiceDataSink implements DataSink
 {
@@ -30,8 +31,6 @@ public class ProviderWebServiceDataSink implements DataSink
         _name       = name;
         _properties = properties;
 
-        _dataConsumer = new BasicDataConsumer<Document>(this, "consume", Document.class);
-
         _endpointId = properties.get(ENDPOINTPATH_PROPERTYNAME);
         
         try
@@ -45,15 +44,39 @@ public class ProviderWebServiceDataSink implements DataSink
     }
 
     @Override
+    public DataFlow getDataFlow()
+    {
+    	return _dataFlow;
+    }
+
+    @Override
+    public void setDataFlow(DataFlow dataFlow)
+    {
+    	_dataFlow = dataFlow;
+    }
+
+    @Override
     public String getName()
     {
         return _name;
     }
 
     @Override
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(_properties);
+    }
+
+    @Override
+    public void setProperties(Map<String, String> properties)
+    {
+        _properties = properties;
     }
 
     public void consume(Document data)
@@ -88,8 +111,10 @@ public class ProviderWebServiceDataSink implements DataSink
 
     private String _endpointId;
 
+    private DataFlow               _dataFlow;
     private String                 _name;
     private Map<String, String>    _properties;
+    @DataConsumerInjection(methodName="comsume")
     private DataConsumer<Document> _dataConsumer;
 
     private ProviderWebServiceJunction _providerWebServiceJunction;

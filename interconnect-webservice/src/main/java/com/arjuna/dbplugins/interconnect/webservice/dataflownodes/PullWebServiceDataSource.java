@@ -14,6 +14,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConnection;
@@ -23,10 +24,13 @@ import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import org.risbic.intraconnect.basic.BasicDataProvider;
+
 import org.w3c.dom.Document;
+
+import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
+import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
 
 public class PullWebServiceDataSource extends TimerTask implements DataSource
 {
@@ -44,8 +48,6 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
         _name          = name;
         _properties    = properties;
 
-        _dataProvider = new BasicDataProvider<Document>(this);
-
         _serviceURL         = properties.get(SERVICEURL_PROPERTYNAME);
         _endpointPath       = properties.get(ENDPOINTPATH_PROPERTYNAME);
         _scheduleDelay      = Long.parseLong(properties.get(SCHEDULEDELAY_PROPERTYNAME));
@@ -61,15 +63,39 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
     }
 
     @Override
+    public DataFlow getDataFlow()
+    {
+    	return _dataFlow;
+    }
+
+    @Override
+    public void setDataFlow(DataFlow dataFlow)
+    {
+    	_dataFlow = dataFlow;
+    }
+
+    @Override
     public String getName()
     {
         return _name;
     }
 
     @Override
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(_properties);
+    }
+
+    @Override
+    public void setProperties(Map<String, String> properties)
+    {
+        _properties = properties;
     }
 
     @Override
@@ -158,7 +184,9 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
 
     private Timer _timer;
     
+    private DataFlow               _dataFlow;
     private String                 _name;
     private Map<String, String>    _properties;
+    @DataProviderInjection
     private DataProvider<Document> _dataProvider;
 }

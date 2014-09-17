@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConnection;
@@ -21,11 +22,14 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import org.risbic.intraconnect.basic.BasicDataConsumer;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 import com.arjuna.databroker.data.DataConsumer;
+import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
+import com.arjuna.databroker.data.jee.annotation.DataConsumerInjection;
 
 public class PushWebServiceDataSink implements DataSink
 {
@@ -41,10 +45,20 @@ public class PushWebServiceDataSink implements DataSink
         _name       = name;
         _properties = properties;
 
-        _dataConsumer = new BasicDataConsumer<Document>(this, "consume", Document.class);
-
         _serviceRootURL = properties.get(SERVICEROOTURL_PROPERTYNAME);
         _endpointPath   = properties.get(ENDPOINTPATH_PROPERTYNAME);
+    }
+
+    @Override
+    public DataFlow getDataFlow()
+    {
+    	return _dataFlow;
+    }
+
+    @Override
+    public void setDataFlow(DataFlow dataFlow)
+    {
+    	_dataFlow = dataFlow;
     }
 
     @Override
@@ -54,9 +68,21 @@ public class PushWebServiceDataSink implements DataSink
     }
 
     @Override
+    public void setName(String name)
+    {
+        _name = name;
+    }
+
+    @Override
     public Map<String, String> getProperties()
     {
         return Collections.unmodifiableMap(_properties);
+    }
+
+    @Override
+    public void setProperties(Map<String, String> properties)
+    {
+        _properties = properties;
     }
 
     public void consume(Document data)
@@ -128,7 +154,9 @@ public class PushWebServiceDataSink implements DataSink
     private String _serviceRootURL;
     private String _endpointPath;
 
+    private DataFlow               _dataFlow;
     private String                 _name;
     private Map<String, String>    _properties;
+    @DataConsumerInjection(methodName="comsume")
     private DataConsumer<Document> _dataConsumer;
 }
