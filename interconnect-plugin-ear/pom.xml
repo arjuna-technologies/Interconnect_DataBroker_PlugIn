@@ -28,13 +28,25 @@
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
-            <artifactId>interconnect-webservice</artifactId>
+            <artifactId>interconnect-domdocument</artifactId>
             <version>1.0.0p1m1</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
-            <artifactId>interconnect-webservice-endpoint</artifactId>
+            <artifactId>interconnect-domdocument-endpoint</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-serializableobject</artifactId>
+            <version>1.0.0p1m1</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-serializableobject-endpoint</artifactId>
             <version>1.0.0p1m1</version>
             <type>war</type>
         </dependency>
@@ -54,12 +66,21 @@
                         </ejbModule>
                         <ejbModule>
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
-                            <artifactId>interconnect-webservice</artifactId>
+                            <artifactId>interconnect-domdocument</artifactId>
+                        </ejbModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-serializableobject</artifactId>
                         </ejbModule>
                         <webModule>
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
-                            <artifactId>interconnect-webservice-endpoint</artifactId>
-                            <contextRoot>data_interconnect</contextRoot>
+                            <artifactId>interconnect-domdocument-endpoint</artifactId>
+                            <contextRoot>domdocument_interconnect</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-serializableobject-endpoint</artifactId>
+                            <contextRoot>serializableobject_interconnect</contextRoot>
                         </webModule>
                     </modules>
                 </configuration>

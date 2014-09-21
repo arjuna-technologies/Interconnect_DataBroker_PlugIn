@@ -13,11 +13,11 @@
         <version>1.0.0p1m1</version>
     </parent>
 
-    <artifactId>interconnect-plugin</artifactId>
+    <artifactId>interconnect-domdocument</artifactId>
 
     <packaging>ejb</packaging>
 
-    <name>Interconnect WebService</name>
+    <name>Interconnect DOM Document</name>
 
     <dependencies>
         <dependency>
@@ -32,16 +32,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.arjuna.dbplugins.interconnect</groupId>
-            <artifactId>interconnect-domdocument</artifactId>
-            <version>1.0.0p1m1</version>
-            <type>ejb</type>
-        </dependency>
-        <dependency>
-            <groupId>com.arjuna.dbplugins.interconnect</groupId>
-            <artifactId>interconnect-serializableobject</artifactId>
-            <version>1.0.0p1m1</version>
-            <type>ejb</type>
+           <groupId>com.arjuna.databroker</groupId>
+            <artifactId>data-common-jee</artifactId>
+            <version>${version.com.arjuna.databroker}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -44,8 +44,10 @@
     </properties>
 
     <modules>
-        <module>interconnect-webservice</module> 
-        <module>interconnect-webservice-endpoint</module>
+        <module>interconnect-domdocument</module> 
+        <module>interconnect-domdocument-endpoint</module>
+        <module>interconnect-serializableobject</module> 
+        <module>interconnect-serializableobject-endpoint</module>
         <module>interconnect-plugin</module>
         <module>interconnect-plugin-ear</module>
     </modules>
