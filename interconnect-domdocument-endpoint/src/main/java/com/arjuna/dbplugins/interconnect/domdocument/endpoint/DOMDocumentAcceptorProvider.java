@@ -26,24 +26,24 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.AcceptorWebServiceDispatcher;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentAcceptorDispatcher;
 import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.CommonDefs;
 
 @ServiceMode(value = Service.Mode.MESSAGE)
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 @WebServiceProvider(targetNamespace = CommonDefs.INTERCONNECT_NAMESPACE, serviceName = CommonDefs.INTERCONNECT_SERVICENAME_ACCEPTOR, portName = CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR)
-public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
+public class DOMDocumentAcceptorProvider implements Provider<SOAPMessage>
 {
-    private static final Logger logger = Logger.getLogger(AcceptorWebServiceProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(DOMDocumentAcceptorProvider.class.getName());
 
-    public AcceptorWebServiceProvider()
+    public DOMDocumentAcceptorProvider()
     {
-        logger.log(Level.FINE, "AcceptorWebServiceProvider");
+        logger.log(Level.FINE, "DOMDocumentAcceptorProvider");
     }
 
     public SOAPMessage invoke(SOAPMessage request)
     {
-        logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke");
+        logger.log(Level.FINE, "DOMDocumentAcceptorProvider.invoke");
 
         try
         {
@@ -51,11 +51,11 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: request = " + requestOutputStream.toString());
+                logger.log(Level.FINER, "DOMDocumentAcceptorProvider.invoke: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
-            if (_acceptorWebServiceDispatcher != null)
+            if (_domDocumentAcceptorDispatcher != null)
             {
                 SOAPPart     requestPart     = request.getSOAPPart();
                 SOAPEnvelope requestEnvelope = requestPart.getEnvelope();
@@ -76,9 +76,9 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
                     }
                 }
 
-                logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke: id = " + id);
+                logger.log(Level.FINE, "DOMDocumentAcceptorProvider.invoke: id = " + id);
                 if ((id != null) && (requestDocument != null))
-                    _acceptorWebServiceDispatcher.dispatch(id, requestDocument);
+                    _domDocumentAcceptorDispatcher.dispatch(id, requestDocument);
 
                 MessageFactory responceFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
                 SOAPMessage    responce        = responceFactory.createMessage();
@@ -87,7 +87,7 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
                 {
                     ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                     responce.writeTo(responceOutputStream);
-                    logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
+                    logger.log(Level.FINER, "DOMDocumentAcceptorProvider.invoke: responce = " + responceOutputStream.toString());
                     responceOutputStream.close();
                 }
 
@@ -96,16 +96,16 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
         }
         catch (SOAPException soapException)
         {
-            logger.log(Level.WARNING, "AcceptorWebServiceProvider ", soapException);
+            logger.log(Level.WARNING, "DOMDocumentAcceptorProvider ", soapException);
         }
         catch (IOException ioException)
         {
-            logger.log(Level.WARNING, "AcceptorWebServiceProvider ", ioException);
+            logger.log(Level.WARNING, "DOMDocumentAcceptorProvider ", ioException);
         }
 
         return null;
     }
 
     @EJB
-    private AcceptorWebServiceDispatcher _acceptorWebServiceDispatcher;
+    private DOMDocumentAcceptorDispatcher _domDocumentAcceptorDispatcher;
 }

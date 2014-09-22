@@ -35,7 +35,7 @@ public class AcceptorWebServiceDataSource implements DataSource
 
         try
         {
-            _acceptorWebServiceDispatcher = (AcceptorWebServiceDispatcher) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-webservice-1.0.0p1m1/AcceptorWebServiceDispatcher");
+            _acceptorWebServiceDispatcher = (AcceptorWebServiceDispatcher) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/AcceptorWebServiceDispatcher");
         }
         catch (Throwable throwable)
         {

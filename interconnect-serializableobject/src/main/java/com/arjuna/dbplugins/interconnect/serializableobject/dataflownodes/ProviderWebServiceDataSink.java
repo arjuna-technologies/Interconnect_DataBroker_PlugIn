@@ -35,7 +35,7 @@ public class ProviderWebServiceDataSink implements DataSink
 
         try
         {
-            _providerWebServiceJunction = (ProviderWebServiceJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-webservice-1.0.0p1m1/ProviderWebServiceJunction");
+            _providerWebServiceJunction = (ProviderWebServiceJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/ProviderWebServiceJunction");
         }
         catch (Throwable throwable)
         {

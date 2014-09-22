@@ -28,25 +28,25 @@ import javax.xml.ws.soap.SOAPBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.CommonDefs;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.ProviderWebServiceJunction;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentProviderJunction;
 
 @ServiceMode(value = Service.Mode.MESSAGE)
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 @WebServiceProvider(targetNamespace = CommonDefs.INTERCONNECT_NAMESPACE, serviceName = CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER, portName = CommonDefs.INTERCONNECT_PORTNAME_PROVIDER)
-public class ProviderWebServiceProvider implements Provider<SOAPMessage>
+public class DOMDocumentProviderProvider implements Provider<SOAPMessage>
 {
-    private static final Logger logger = Logger.getLogger(ProviderWebServiceProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(DOMDocumentProviderProvider.class.getName());
 
-    public ProviderWebServiceProvider()
+    public DOMDocumentProviderProvider()
     {
-        logger.log(Level.FINE, "ProviderWebServiceProvider");
+        logger.log(Level.FINE, "DOMDocumentProviderProvider");
     }
 
     @SuppressWarnings("unchecked")
     @WebMethod
     public SOAPMessage invoke(SOAPMessage request)
     {
-        logger.log(Level.FINE, "ProviderWebServiceProvider.invoke");
+        logger.log(Level.FINE, "DOMDocumentProviderProvider.invoke");
 
         try
         {
@@ -54,11 +54,11 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "ProviderWebServiceProvider.invoke: request: " + requestOutputStream.toString());
+                logger.log(Level.FINER, "DOMDocumentProviderProvider.invoke: request: " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
-            if (_providerWebServiceJunction != null)
+            if (_domDocumentProviderJunction != null)
             {
                 String id = null;
 
@@ -93,10 +93,10 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
                 SOAPEnvelope responceEnvelope = responcePart.getEnvelope();
                 SOAPBody     responceBody     = responceEnvelope.getBody();
 
-                logger.log(Level.FINE, "ProviderWebServiceProvider.invoke: id = " + id);
+                logger.log(Level.FINE, "DOMDocumentProviderProvider.invoke: id = " + id);
                 if (id != null)
                 {
-                    Document document = _providerWebServiceJunction.withdraw(id);
+                    Document document = _domDocumentProviderJunction.withdraw(id);
                     if (document != null)
                         responceBody.addDocument(document);
                 }
@@ -105,7 +105,7 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
                 {
                     ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                     request.writeTo(responceOutputStream);
-                    logger.log(Level.FINER, "ProviderWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
+                    logger.log(Level.FINER, "DOMDocumentProviderProvider.invoke: responce = " + responceOutputStream.toString());
                     responceOutputStream.close();
                 }
 
@@ -114,16 +114,16 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
         }
         catch (SOAPException soapException)
         {
-            logger.log(Level.WARNING, "ProviderWebServiceProvider ", soapException);
+            logger.log(Level.WARNING, "DOMDocumentProviderProvider ", soapException);
         }
         catch (IOException ioException)
         {
-            logger.log(Level.WARNING, "ProviderWebServiceProvider ", ioException);
+            logger.log(Level.WARNING, "DOMDocumentProviderProvider ", ioException);
         }
         
         return null;
     }
 
     @EJB
-    private ProviderWebServiceJunction _providerWebServiceJunction;
+    private DOMDocumentProviderJunction _domDocumentProviderJunction;
 }
