@@ -43,7 +43,7 @@ public class DOMDocumentAcceptorDataSource implements DataSource
         }
 
         if (_domDocumentAcceptorDispatcher != null)
-        	_domDocumentAcceptorDispatcher.register(_endpointPath, this);
+            _domDocumentAcceptorDispatcher.register(_endpointPath, this);
         else
             logger.log(Level.WARNING, "DOMDocumentAcceptorDataSource.doRegister: no domDocumentAcceptorDispatcher");
     }
@@ -51,13 +51,13 @@ public class DOMDocumentAcceptorDataSource implements DataSource
     @Override
     public DataFlow getDataFlow()
     {
-    	return _dataFlow;
+        return _dataFlow;
     }
 
     @Override
     public void setDataFlow(DataFlow dataFlow)
     {
-    	_dataFlow = dataFlow;
+        _dataFlow = dataFlow;
     }
 
     @Override

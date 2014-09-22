@@ -33,7 +33,7 @@ public class DOMDocumentAcceptorDispatcher
             DOMDocumentAcceptorDataSource domDocumentAcceptorDataSource = _domDocumentAcceptorDataSourceMap.get(id);
 
             if (domDocumentAcceptorDataSource != null)
-            	domDocumentAcceptorDataSource.dispatch(document);
+                domDocumentAcceptorDataSource.dispatch(document);
             else
                 logger.log(Level.FINE, "DOMDocumentAcceptorDispatcher.dispatch: unable to find 'dom document acceptor data source': " + id);
         }
