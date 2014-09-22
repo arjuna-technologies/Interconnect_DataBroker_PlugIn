@@ -17,10 +17,10 @@ import com.arjuna.databroker.data.InvalidNameException;
 import com.arjuna.databroker.data.InvalidPropertyException;
 import com.arjuna.databroker.data.MissingMetaPropertyException;
 import com.arjuna.databroker.data.MissingPropertyException;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.AcceptorWebServiceDataSource;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.ProviderWebServiceDataSink;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.PullWebServiceDataSource;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.PushWebServiceDataSink;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectAcceptorDataSource;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectProviderDataSink;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectPullDataSource;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectPushDataSink;
 
 public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFlowNodeFactory
 {
@@ -82,14 +82,14 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
                 String type = metaProperties.get("Type");
                 if (type.equals("Pull"))
                 {
-                    propertyNames.add(PullWebServiceDataSource.SERVICEURL_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.SCHEDULEDELAY_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.SCHEDULEPERIOD_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPullDataSource.SERVICEURL_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPullDataSource.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPullDataSource.SCHEDULEDELAY_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPullDataSource.SCHEDULEPERIOD_PROPERTYNAME);
                 }
                 else if (type.equals("Acceptor"))
                 {
-                    propertyNames.add(AcceptorWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectAcceptorDataSource.ENDPOINTPATH_PROPERTYNAME);
                 }
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Pull' or 'Acceptor'", "Type", type);
@@ -108,11 +108,11 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
                 String type = metaProperties.get("Type");
                 if (type.equals("Push"))
                 {
-                    propertyNames.add(PushWebServiceDataSink.SERVICEROOTURL_PROPERTYNAME);
-                    propertyNames.add(PushWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPushDataSink.SERVICEROOTURL_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPushDataSink.ENDPOINTPATH_PROPERTYNAME);
                 }
                 else if (type.equals("Provider"))
-                    propertyNames.add(ProviderWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectProviderDataSink.ENDPOINTPATH_PROPERTYNAME);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Push' or 'Provider'", "Type", type);
 
@@ -136,9 +136,9 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
             {
                 String type = metaProperties.get("Type");
                 if (type.equals("Pull"))
-                    return (T) new PullWebServiceDataSource(name, properties);
+                    return (T) new SerializableObjectPullDataSource(name, properties);
                 else if (type.equals("Acceptor"))
-                    return (T) new AcceptorWebServiceDataSource(name, properties);
+                    return (T) new SerializableObjectAcceptorDataSource(name, properties);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Pull' or 'Acceptor'", "Type", type);
             }
@@ -151,9 +151,9 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
             {
                 String type = metaProperties.get("Type");
                 if (type.equals("Push"))
-                    return (T) new PushWebServiceDataSink(name, properties);
+                    return (T) new SerializableObjectPushDataSink(name, properties);
                 else if (type.equals("Provider"))
-                    return (T) new ProviderWebServiceDataSink(name, properties);
+                    return (T) new SerializableObjectProviderDataSink(name, properties);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Push' or 'Provider'", "Type", type);
             }

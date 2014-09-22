@@ -18,15 +18,15 @@ import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
 import com.arjuna.databroker.data.jee.annotation.DataConsumerInjection;
 
-public class ProviderWebServiceDataSink implements DataSink
+public class SerializableObjectProviderDataSink implements DataSink
 {
-    private static final Logger logger = Logger.getLogger(ProviderWebServiceDataSink.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectProviderDataSink.class.getName());
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
-    public ProviderWebServiceDataSink(String name, Map<String, String> properties)
+    public SerializableObjectProviderDataSink(String name, Map<String, String> properties)
     {
-        logger.log(Level.FINE, "ProviderWebServiceDataSink: " + name + ", " + properties);
+        logger.log(Level.FINE, "SerializableObjectProviderDataSink: " + name + ", " + properties);
 
         _name       = name;
         _properties = properties;
@@ -35,11 +35,11 @@ public class ProviderWebServiceDataSink implements DataSink
 
         try
         {
-            _providerWebServiceJunction = (ProviderWebServiceJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/ProviderWebServiceJunction");
+            _serializableObjectProviderJunction = (SerializableObjectProviderJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/SerializableObjectProviderJunction");
         }
         catch (Throwable throwable)
         {
-            logger.log(Level.WARNING, "ProviderWebServiceDataSink: no providerWebServiceJunction found", throwable);
+            logger.log(Level.WARNING, "SerializableObjectProviderDataSink: no serializableObjectProviderJunction found", throwable);
         }
     }
 
@@ -81,12 +81,12 @@ public class ProviderWebServiceDataSink implements DataSink
 
     public void consume(Serializable data)
     {
-        logger.log(Level.FINE, "ProviderWebServiceDataSink.consume");
+        logger.log(Level.FINE, "SerializableObjectProviderDataSink.consume");
 
-        if (_providerWebServiceJunction != null)
-            _providerWebServiceJunction.deposit(_endpointId, data);
+        if (_serializableObjectProviderJunction != null)
+            _serializableObjectProviderJunction.deposit(_endpointId, data);
         else
-            logger.log(Level.WARNING, "ProviderWebServiceDataSink.consume: no providerWebServiceJunction");
+            logger.log(Level.WARNING, "SerializableObjectProviderDataSink.consume: no serializableObjectProviderJunction");
     }
 
     @Override
@@ -117,5 +117,5 @@ public class ProviderWebServiceDataSink implements DataSink
     @DataConsumerInjection(methodName="consume")
     private DataConsumer<Serializable> _dataConsumer;
 
-    private ProviderWebServiceJunction _providerWebServiceJunction;
+    private SerializableObjectProviderJunction _serializableObjectProviderJunction;
 }

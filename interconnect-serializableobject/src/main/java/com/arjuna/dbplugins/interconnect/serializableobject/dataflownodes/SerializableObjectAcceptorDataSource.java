@@ -18,15 +18,15 @@ import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
 import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
 
-public class AcceptorWebServiceDataSource implements DataSource
+public class SerializableObjectAcceptorDataSource implements DataSource
 {
-    private static final Logger logger = Logger.getLogger(AcceptorWebServiceDataSource.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectAcceptorDataSource.class.getName());
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
-    public AcceptorWebServiceDataSource(String name, Map<String, String> properties)
+    public SerializableObjectAcceptorDataSource(String name, Map<String, String> properties)
     {
-        logger.log(Level.FINE, "AcceptorWebServiceDataSource: " + name + ", " + properties);
+        logger.log(Level.FINE, "SerializableObjectAcceptorDataSource: " + name + ", " + properties);
 
         _name       = name;
         _properties = properties;
@@ -35,17 +35,17 @@ public class AcceptorWebServiceDataSource implements DataSource
 
         try
         {
-            _acceptorWebServiceDispatcher = (AcceptorWebServiceDispatcher) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/AcceptorWebServiceDispatcher");
+            _serializableObjectAcceptorDispatcher = (SerializableObjectAcceptorDispatcher) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-serializableobject-1.0.0p1m1/SerializableObjectAcceptorDispatcher");
         }
         catch (Throwable throwable)
         {
-            logger.log(Level.WARNING, "AcceptorWebServiceDataSource: no acceptorWebServiceDispatcher found", throwable);
+            logger.log(Level.WARNING, "SerializableObjectAcceptorDataSource: no serializableObjectAcceptorDispatcher found", throwable);
         }
 
-        if (_acceptorWebServiceDispatcher != null)
-            _acceptorWebServiceDispatcher.register(_endpointPath, this);
+        if (_serializableObjectAcceptorDispatcher != null)
+            _serializableObjectAcceptorDispatcher.register(_endpointPath, this);
         else
-            logger.log(Level.WARNING, "AcceptorWebServiceDataSource.doRegister: no acceptorWebServiceDispatcher");
+            logger.log(Level.WARNING, "SerializableObjectAcceptorDataSource.doRegister: no serializableObjectAcceptorDispatcher");
     }
 
     @Override
@@ -86,7 +86,7 @@ public class AcceptorWebServiceDataSource implements DataSource
 
     public void dispatch(Serializable serializableObject)
     {
-        logger.log(Level.FINE, "AcceptorWebServiceDataSource.dispatch");
+        logger.log(Level.FINE, "SerializableObjectAcceptorDataSource.dispatch");
 
         _dataProvider.produce(serializableObject);
     }
@@ -119,5 +119,5 @@ public class AcceptorWebServiceDataSource implements DataSource
 
     private String _endpointPath;
 
-    private AcceptorWebServiceDispatcher _acceptorWebServiceDispatcher;
+    private SerializableObjectAcceptorDispatcher _serializableObjectAcceptorDispatcher;
 }

@@ -12,13 +12,13 @@ import java.util.logging.Logger;
 import javax.ejb.Singleton;
 
 @Singleton
-public class ProviderWebServiceJunction
+public class SerializableObjectProviderJunction
 {
-    private static final Logger logger = Logger.getLogger(ProviderWebServiceJunction.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectProviderJunction.class.getName());
 
-    public ProviderWebServiceJunction()
+    public SerializableObjectProviderJunction()
     {
-        logger.log(Level.FINE, "ProviderWebServiceJunction");
+        logger.log(Level.FINE, "SerializableObjectProviderJunction");
 
         _syncObject            = new Object();
         _serializableObjectMap = new HashMap<String, Serializable>();
@@ -28,7 +28,7 @@ public class ProviderWebServiceJunction
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "ProviderWebServiceJunction.deposit: " + id);
+            logger.log(Level.FINE, "SerializableObjectProviderJunction.deposit: " + id);
 
             _serializableObjectMap.put(id, serializableObject);
         }
@@ -38,7 +38,7 @@ public class ProviderWebServiceJunction
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "ProviderWebServiceJunction.withdraw: " + id);
+            logger.log(Level.FINE, "SerializableObjectProviderJunction.withdraw: " + id);
 
             return _serializableObjectMap.remove(id);
         }

@@ -28,16 +28,16 @@ import javax.xml.ws.soap.SOAPBinding;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.CommonDefs;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.ProviderWebServiceJunction;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectProviderJunction;
 
 @ServiceMode(value = Service.Mode.MESSAGE)
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 @WebServiceProvider(targetNamespace = CommonDefs.INTERCONNECT_NAMESPACE, serviceName = CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER, portName = CommonDefs.INTERCONNECT_PORTNAME_PROVIDER)
-public class ProviderWebServiceProvider implements Provider<SOAPMessage>
+public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
 {
-    private static final Logger logger = Logger.getLogger(ProviderWebServiceProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectProviderProvider.class.getName());
 
-    public ProviderWebServiceProvider()
+    public SerializableObjectProviderProvider()
     {
         logger.log(Level.FINE, "ProviderWebServiceProvider");
     }
@@ -125,5 +125,5 @@ public class ProviderWebServiceProvider implements Provider<SOAPMessage>
     }
 
     @EJB
-    private ProviderWebServiceJunction _providerWebServiceJunction;
+    private SerializableObjectProviderJunction _providerWebServiceJunction;
 }

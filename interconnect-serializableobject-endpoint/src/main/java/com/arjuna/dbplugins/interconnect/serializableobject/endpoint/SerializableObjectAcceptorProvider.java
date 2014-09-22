@@ -26,17 +26,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.AcceptorWebServiceDispatcher;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectAcceptorDispatcher;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.CommonDefs;
 
 @ServiceMode(value = Service.Mode.MESSAGE)
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
 @WebServiceProvider(targetNamespace = CommonDefs.INTERCONNECT_NAMESPACE, serviceName = CommonDefs.INTERCONNECT_SERVICENAME_ACCEPTOR, portName = CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR)
-public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
+public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
 {
-    private static final Logger logger = Logger.getLogger(AcceptorWebServiceProvider.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectAcceptorProvider.class.getName());
 
-    public AcceptorWebServiceProvider()
+    public SerializableObjectAcceptorProvider()
     {
         logger.log(Level.FINE, "AcceptorWebServiceProvider");
     }
@@ -107,5 +107,5 @@ public class AcceptorWebServiceProvider implements Provider<SOAPMessage>
     }
 
     @EJB
-    private AcceptorWebServiceDispatcher _acceptorWebServiceDispatcher;
+    private SerializableObjectAcceptorDispatcher _acceptorWebServiceDispatcher;
 }

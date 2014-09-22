@@ -29,18 +29,18 @@ import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
 import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
 
-public class PullWebServiceDataSource extends TimerTask implements DataSource
+public class SerializableObjectPullDataSource extends TimerTask implements DataSource
 {
-    private static final Logger logger = Logger.getLogger(PullWebServiceDataSource.class.getName());
+    private static final Logger logger = Logger.getLogger(SerializableObjectPullDataSource.class.getName());
 
     public static final String SERVICEURL_PROPERTYNAME     = "Service URL";
     public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
     public static final String SCHEDULEDELAY_PROPERTYNAME  = "Schedule Delay";
     public static final String SCHEDULEPERIOD_PROPERTYNAME = "Schedule Period";
 
-    public PullWebServiceDataSource(String name, Map<String, String> properties)
+    public SerializableObjectPullDataSource(String name, Map<String, String> properties)
     {
-        logger.log(Level.FINE, "PullWebServiceDataSource: " + name + ", " + properties);
+        logger.log(Level.FINE, "SerializableObjectPullDataSource: " + name + ", " + properties);
 
         _name          = name;
         _properties    = properties;
@@ -98,7 +98,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
     @Override
     public void run()
     {
-        logger.log(Level.FINE, "PullWebServiceDataSource.run");
+        logger.log(Level.FINE, "SerializableObjectPullDataSource.run");
 
         Serializable result = null;
         try
@@ -116,7 +116,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "PullWebServiceDataSource.run: request = " + requestOutputStream.toString());
+                logger.log(Level.FINER, "SerializableObjectPullDataSource.run: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -129,7 +129,7 @@ public class PullWebServiceDataSource extends TimerTask implements DataSource
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.FINER, "PullWebServiceDataSource.run: responce: " + responceOutputStream.toString());
+                logger.log(Level.FINER, "SerializableObjectPullDataSource.run: responce: " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
 
