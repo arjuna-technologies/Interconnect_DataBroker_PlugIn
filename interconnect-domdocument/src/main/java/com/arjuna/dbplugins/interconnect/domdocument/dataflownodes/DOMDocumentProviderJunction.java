@@ -12,13 +12,13 @@ import javax.ejb.Singleton;
 import org.w3c.dom.Document;
 
 @Singleton
-public class ProviderWebServiceJunction
+public class DOMDocumentProviderJunction
 {
-    private static final Logger logger = Logger.getLogger(ProviderWebServiceJunction.class.getName());
+    private static final Logger logger = Logger.getLogger(DOMDocumentProviderJunction.class.getName());
 
-    public ProviderWebServiceJunction()
+    public DOMDocumentProviderJunction()
     {
-        logger.log(Level.FINE, "ProviderWebServiceJunction");
+        logger.log(Level.FINE, "DOMDocumentProviderJunction");
 
         _syncObject  = new Object();
         _documentMap = new HashMap<String, Document>();
@@ -28,7 +28,7 @@ public class ProviderWebServiceJunction
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "ProviderWebServiceJunction.deposit: " + id);
+            logger.log(Level.FINE, "DOMDocumentProviderJunction.deposit: " + id);
 
             _documentMap.put(id, document);
         }
@@ -38,7 +38,7 @@ public class ProviderWebServiceJunction
     {
         synchronized (_syncObject)
         {
-            logger.log(Level.FINE, "ProviderWebServiceJunction.withdraw: " + id);
+            logger.log(Level.FINE, "DOMDocumentProviderJunction.withdraw: " + id);
 
             return _documentMap.remove(id);
         }

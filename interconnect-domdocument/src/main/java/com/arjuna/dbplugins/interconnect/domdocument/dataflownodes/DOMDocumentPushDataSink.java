@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPConnection;
@@ -22,25 +21,23 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
 import com.arjuna.databroker.data.jee.annotation.DataConsumerInjection;
 
-public class PushWebServiceDataSink implements DataSink
+public class DOMDocumentPushDataSink implements DataSink
 {
-    private static final Logger logger = Logger.getLogger(PushWebServiceDataSink.class.getName());
+    private static final Logger logger = Logger.getLogger(DOMDocumentPushDataSink.class.getName());
 
     public static final String SERVICEROOTURL_PROPERTYNAME = "Service Root URL";
     public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
 
-    public PushWebServiceDataSink(String name, Map<String, String> properties)
+    public DOMDocumentPushDataSink(String name, Map<String, String> properties)
     {
-        logger.log(Level.FINE, "PushWebServiceDataSink: " + name + ", " + properties);
+        logger.log(Level.FINE, "DOMDocumentPushDataSink: " + name + ", " + properties);
 
         _name       = name;
         _properties = properties;
@@ -87,7 +84,7 @@ public class PushWebServiceDataSink implements DataSink
 
     public void consume(Document data)
     {
-        logger.log(Level.FINE, "PushWebServiceDataSink.consume");
+        logger.log(Level.FINE, "DOMDocumentPushDataSink.consume");
 
         try
         {
@@ -107,7 +104,7 @@ public class PushWebServiceDataSink implements DataSink
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINE, "PushWebServiceDataSink.consume: request = " + requestOutputStream.toString());
+                logger.log(Level.FINE, "DOMDocumentPushDataSink.consume: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -121,7 +118,7 @@ public class PushWebServiceDataSink implements DataSink
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.FINE, "PushWebServiceDataSink.consume: responce = " + responceOutputStream.toString());
+                logger.log(Level.FINE, "DOMDocumentPushDataSink.consume: responce = " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
         }

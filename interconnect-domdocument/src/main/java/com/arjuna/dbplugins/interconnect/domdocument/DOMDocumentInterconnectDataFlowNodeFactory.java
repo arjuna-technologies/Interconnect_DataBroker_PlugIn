@@ -18,10 +18,10 @@ import com.arjuna.databroker.data.InvalidNameException;
 import com.arjuna.databroker.data.InvalidPropertyException;
 import com.arjuna.databroker.data.MissingMetaPropertyException;
 import com.arjuna.databroker.data.MissingPropertyException;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.AcceptorWebServiceDataSource;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.ProviderWebServiceDataSink;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.PullWebServiceDataSource;
-import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.PushWebServiceDataSink;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentAcceptorDataSource;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentProviderDataSink;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentPullDataSource;
+import com.arjuna.dbplugins.interconnect.domdocument.dataflownodes.DOMDocumentPushDataSink;
 
 public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeFactory
 {
@@ -83,14 +83,14 @@ public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeF
                 String type = metaProperties.get("Type");
                 if (type.equals("Pull"))
                 {
-                    propertyNames.add(PullWebServiceDataSource.SERVICEURL_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.SCHEDULEDELAY_PROPERTYNAME);
-                    propertyNames.add(PullWebServiceDataSource.SCHEDULEPERIOD_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPullDataSource.SERVICEURL_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPullDataSource.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPullDataSource.SCHEDULEDELAY_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPullDataSource.SCHEDULEPERIOD_PROPERTYNAME);
                 }
                 else if (type.equals("Acceptor"))
                 {
-                    propertyNames.add(AcceptorWebServiceDataSource.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentAcceptorDataSource.ENDPOINTPATH_PROPERTYNAME);
                 }
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Pull' or 'Acceptor'", "Type", type);
@@ -109,11 +109,11 @@ public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeF
                 String type = metaProperties.get("Type");
                 if (type.equals("Push"))
                 {
-                    propertyNames.add(PushWebServiceDataSink.SERVICEROOTURL_PROPERTYNAME);
-                    propertyNames.add(PushWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPushDataSink.SERVICEROOTURL_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentPushDataSink.ENDPOINTPATH_PROPERTYNAME);
                 }
                 else if (type.equals("Provider"))
-                    propertyNames.add(ProviderWebServiceDataSink.ENDPOINTPATH_PROPERTYNAME);
+                    propertyNames.add(DOMDocumentProviderDataSink.ENDPOINTPATH_PROPERTYNAME);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Push' or 'Provider'", "Type", type);
 
@@ -137,9 +137,9 @@ public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeF
             {
                 String type = metaProperties.get("Type");
                 if (type.equals("Pull"))
-                    return (T) new PullWebServiceDataSource(name, properties);
+                    return (T) new DOMDocumentPullDataSource(name, properties);
                 else if (type.equals("Acceptor"))
-                    return (T) new AcceptorWebServiceDataSource(name, properties);
+                    return (T) new DOMDocumentAcceptorDataSource(name, properties);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Pull' or 'Acceptor'", "Type", type);
             }
@@ -152,9 +152,9 @@ public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeF
             {
                 String type = metaProperties.get("Type");
                 if (type.equals("Push"))
-                    return (T) new PushWebServiceDataSink(name, properties);
+                    return (T) new DOMDocumentPushDataSink(name, properties);
                 else if (type.equals("Provider"))
-                    return (T) new ProviderWebServiceDataSink(name, properties);
+                    return (T) new DOMDocumentProviderDataSink(name, properties);
                 else
                     throw new InvalidMetaPropertyException("Expecting value of 'Type' meta property 'Push' or 'Provider'", "Type", type);
             }
