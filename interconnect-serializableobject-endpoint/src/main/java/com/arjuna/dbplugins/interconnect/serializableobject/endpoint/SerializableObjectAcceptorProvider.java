@@ -26,8 +26,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectAcceptorDispatcher;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.CommonDefs;
+import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectAcceptorDispatcher;
 
 @ServiceMode(value = Service.Mode.MESSAGE)
 @BindingType(value = SOAPBinding.SOAP12HTTP_BINDING)
@@ -38,12 +38,12 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
 
     public SerializableObjectAcceptorProvider()
     {
-        logger.log(Level.FINE, "AcceptorWebServiceProvider");
+        logger.log(Level.FINE, "SerializableObjectAcceptorProvider");
     }
 
     public SOAPMessage invoke(SOAPMessage request)
     {
-        logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke");
+        logger.log(Level.FINE, "SerializableObjectAcceptorProvider.invoke");
 
         try
         {
@@ -51,11 +51,11 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: request = " + requestOutputStream.toString());
+                logger.log(Level.FINER, "SerializableObjectAcceptorProvider.invoke: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
-            if (_acceptorWebServiceDispatcher != null)
+            if (_serializableObjectAcceptorDispatcher != null)
             {
                 SOAPPart     requestPart     = request.getSOAPPart();
                 SOAPEnvelope requestEnvelope = requestPart.getEnvelope();
@@ -76,9 +76,9 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
                     }
                 }
 
-                logger.log(Level.FINE, "AcceptorWebServiceProvider.invoke: id = " + id);
+                logger.log(Level.FINE, "SerializableObjectAcceptorProvider.invoke: id = " + id);
                 if ((id != null) && (requestDocument != null))
-                    _acceptorWebServiceDispatcher.dispatch(id, requestDocument);
+                    _serializableObjectAcceptorDispatcher.dispatch(id, requestDocument);
 
                 MessageFactory responceFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
                 SOAPMessage    responce        = responceFactory.createMessage();
@@ -87,7 +87,7 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
                 {
                     ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                     responce.writeTo(responceOutputStream);
-                    logger.log(Level.FINER, "AcceptorWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
+                    logger.log(Level.FINER, "SerializableObjectAcceptorProvider.invoke: responce = " + responceOutputStream.toString());
                     responceOutputStream.close();
                 }
 
@@ -96,16 +96,16 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
         }
         catch (SOAPException soapException)
         {
-            logger.log(Level.WARNING, "AcceptorWebServiceProvider ", soapException);
+            logger.log(Level.WARNING, "SerializableObjectAcceptorProvider ", soapException);
         }
         catch (IOException ioException)
         {
-            logger.log(Level.WARNING, "AcceptorWebServiceProvider ", ioException);
+            logger.log(Level.WARNING, "SerializableObjectAcceptorProvider ", ioException);
         }
 
         return null;
     }
 
     @EJB
-    private SerializableObjectAcceptorDispatcher _acceptorWebServiceDispatcher;
+    private SerializableObjectAcceptorDispatcher _serializableObjectAcceptorDispatcher;
 }

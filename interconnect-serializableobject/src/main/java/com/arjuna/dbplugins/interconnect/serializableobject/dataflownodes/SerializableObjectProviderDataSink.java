@@ -46,13 +46,13 @@ public class SerializableObjectProviderDataSink implements DataSink
     @Override
     public DataFlow getDataFlow()
     {
-    	return _dataFlow;
+        return _dataFlow;
     }
 
     @Override
     public void setDataFlow(DataFlow dataFlow)
     {
-    	_dataFlow = dataFlow;
+        _dataFlow = dataFlow;
     }
 
     @Override

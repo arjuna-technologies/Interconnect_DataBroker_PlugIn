@@ -39,14 +39,14 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
 
     public SerializableObjectProviderProvider()
     {
-        logger.log(Level.FINE, "ProviderWebServiceProvider");
+        logger.log(Level.FINE, "SerializableObjectProviderProvider");
     }
 
     @SuppressWarnings("unchecked")
     @WebMethod
     public SOAPMessage invoke(SOAPMessage request)
     {
-        logger.log(Level.FINE, "ProviderWebServiceProvider.invoke");
+        logger.log(Level.FINE, "SerializableObjectProviderProvider.invoke");
 
         try
         {
@@ -54,11 +54,11 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "ProviderWebServiceProvider.invoke: request: " + requestOutputStream.toString());
+                logger.log(Level.FINER, "SerializableObjectProviderProvider.invoke: request: " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
-            if (_providerWebServiceJunction != null)
+            if (_serializableObjectProviderJunction != null)
             {
                 String id = null;
 
@@ -93,10 +93,10 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 SOAPEnvelope responceEnvelope = responcePart.getEnvelope();
                 SOAPBody     responceBody     = responceEnvelope.getBody();
 
-                logger.log(Level.FINE, "ProviderWebServiceProvider.invoke: id = " + id);
+                logger.log(Level.FINE, "SerializableObjectProviderProvider.invoke: id = " + id);
                 if (id != null)
                 {
-                    Document document = _providerWebServiceJunction.withdraw(id);
+                    Document document = _serializableObjectProviderJunction.withdraw(id);
                     if (document != null)
                         responceBody.addDocument(document);
                 }
@@ -105,7 +105,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 {
                     ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                     request.writeTo(responceOutputStream);
-                    logger.log(Level.FINER, "ProviderWebServiceProvider.invoke: responce = " + responceOutputStream.toString());
+                    logger.log(Level.FINER, "SerializableObjectProviderProvider.invoke: responce = " + responceOutputStream.toString());
                     responceOutputStream.close();
                 }
 
@@ -114,16 +114,16 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
         }
         catch (SOAPException soapException)
         {
-            logger.log(Level.WARNING, "ProviderWebServiceProvider ", soapException);
+            logger.log(Level.WARNING, "SerializableObjectProviderProvider ", soapException);
         }
         catch (IOException ioException)
         {
-            logger.log(Level.WARNING, "ProviderWebServiceProvider ", ioException);
+            logger.log(Level.WARNING, "SerializableObjectProviderProvider ", ioException);
         }
         
         return null;
     }
 
     @EJB
-    private SerializableObjectProviderJunction _providerWebServiceJunction;
+    private SerializableObjectProviderJunction _serializableObjectProviderJunction;
 }

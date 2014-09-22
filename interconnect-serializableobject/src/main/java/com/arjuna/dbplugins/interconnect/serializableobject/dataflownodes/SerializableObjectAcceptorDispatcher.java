@@ -33,7 +33,7 @@ public class SerializableObjectAcceptorDispatcher
             SerializableObjectAcceptorDataSource serializableObjectAcceptorDataSource = _serializableObjectAcceptorDataSourceMap.get(id);
 
             if (serializableObjectAcceptorDataSource != null)
-            	serializableObjectAcceptorDataSource.dispatch(serializableObject);
+                serializableObjectAcceptorDataSource.dispatch(serializableObject);
             else
                 logger.log(Level.FINE, "SerializableObjectAcceptorDispatcher.dispatch: unable to find ' serializable object acceptor data source': " + id);
         }

@@ -22,8 +22,6 @@ import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
@@ -50,13 +48,13 @@ public class SerializableObjectPushDataSink implements DataSink
     @Override
     public DataFlow getDataFlow()
     {
-    	return _dataFlow;
+        return _dataFlow;
     }
 
     @Override
     public void setDataFlow(DataFlow dataFlow)
     {
-    	_dataFlow = dataFlow;
+        _dataFlow = dataFlow;
     }
 
     @Override
@@ -83,7 +81,7 @@ public class SerializableObjectPushDataSink implements DataSink
         _properties = properties;
     }
 
-    public void consume(Document data)
+    public void consume(Serializable data)
     {
         logger.log(Level.FINE, "SerializableObjectPushDataSink.consume");
 
