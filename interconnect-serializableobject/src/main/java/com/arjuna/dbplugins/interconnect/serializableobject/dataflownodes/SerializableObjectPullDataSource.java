@@ -112,7 +112,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
             SOAPPart       requestPart      = request.getSOAPPart();
             SOAPEnvelope   requestEnvelope  = requestPart.getEnvelope();
             SOAPBody       requestBody      = requestEnvelope.getBody();
-            SOAPElement    requestElement   = requestBody.addChildElement(CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_OBTAINDATA, "ic", CommonDefs.INTERCONNECT_NAMESPACE);
+            SOAPElement    requestElement   = requestBody.addChildElement(CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_PROVIDEDATA, "ic", CommonDefs.INTERCONNECT_NAMESPACE);
             SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
             requestParameter.addTextNode(_endpointPath);
 

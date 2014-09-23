@@ -6,13 +6,18 @@ package com.arjuna.dbplugins.interconnect.serializableobject.endpoint;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPConstants;
 import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
@@ -25,6 +30,7 @@ import javax.xml.ws.Service;
 import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.soap.SOAPBinding;
+import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.CommonDefs;
@@ -72,7 +78,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 {
                     SOAPElement requestElement = requestElements.next();
 
-                    if ((requestElement.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_OBTAINDATA.equals(requestElement.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestElement.getNamespaceURI()))
+                    if ((requestElement.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_PROVIDEDATA.equals(requestElement.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestElement.getNamespaceURI()))
                     {
                         Iterator<SOAPElement> requestParameters = (Iterator<SOAPElement>) requestElement.getChildElements();
 
@@ -80,7 +86,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                         {
                             SOAPElement requestParameter = requestParameters.next();
 
-                            if ((requestParameter.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_PARAMETERNAME_ID.equals(requestParameter.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestParameter.getNamespaceURI()))
+                            if ((requestParameter.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID.equals(requestParameter.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestParameter.getNamespaceURI()))
                                 id = requestParameter.getTextContent();
                         }
                     }
@@ -96,8 +102,23 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 logger.log(Level.FINE, "SerializableObjectProviderProvider.invoke: id = " + id);
                 if (id != null)
                 {
-                    Document document = _serializableObjectProviderJunction.withdraw(id);
-                    if (document != null)
+                    Serializable serializableObject = _serializableObjectProviderJunction.withdraw(id);
+
+                    requestEnvelope.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
+
+                    QName           requestBodyQName   = requestBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
+                    SOAPBodyElement requestBodyElement = requestBody.addBodyElement(requestBodyQName);
+                    SOAPElement     requestIdElement   = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
+                    SOAPElement     requestObjElement  = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+
+                    ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
+                    ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
+                    objectObjectOutputStream.writeObject(data);
+                    objectObjectOutputStream.flush();
+                    requestObjElement.setTextContent(Hex.encodeHexString(objectByteArrayOutputStream.toByteArray()));
+                    objectObjectOutputStream.close();
+
+                    if (serializableObject != null)
                         responceBody.addDocument(document);
                 }
 

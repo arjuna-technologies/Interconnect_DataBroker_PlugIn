@@ -5,6 +5,7 @@
 package com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes;
 
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Collection;
@@ -14,16 +15,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
+import javax.xml.soap.SOAPBodyElement;
 import javax.xml.soap.SOAPConnection;
 import javax.xml.soap.SOAPConnectionFactory;
 import javax.xml.soap.SOAPConstants;
+import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import org.apache.commons.codec.binary.Hex;
 import com.arjuna.databroker.data.DataConsumer;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataSink;
@@ -89,17 +92,26 @@ public class SerializableObjectPushDataSink implements DataSink
 
         try
         {
-            MessageFactory messageFactory   = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
-            SOAPMessage    request          = messageFactory.createMessage();
-            SOAPPart       requestPart      = request.getSOAPPart();
-            SOAPEnvelope   requestEnvelope  = requestPart.getEnvelope();
-            SOAPBody       requestBody      = requestEnvelope.getBody();
-            Element        requestElement   = requestData.getDocumentElement();
-            Element        requestIdElement = requestData.createElementNS(CommonDefs.INTERCONNECT_NAMESPACE, CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_ID);
-            Document       requestData      = (Document) data.cloneNode(true);
-            requestIdElement.appendChild(requestData.createTextNode(_endpointPath));
-            requestElement.appendChild(requestIdElement);
-            requestBody.addDocument(requestData);
+            MessageFactory  messageFactory        = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
+            SOAPMessage     request               = messageFactory.createMessage();
+            SOAPPart        requestPart           = request.getSOAPPart();
+            SOAPEnvelope    requestEnvelope       = requestPart.getEnvelope();
+            SOAPBody        requestBody           = requestEnvelope.getBody();
+            requestEnvelope.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
+
+            QName           requestBodyQName   = requestBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
+            SOAPBodyElement requestBodyElement = requestBody.addBodyElement(requestBodyQName);
+            SOAPElement     requestIdElement   = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_ID, "ic");
+            SOAPElement     requestObjElement  = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+
+            requestIdElement.setTextContent(_endpointPath);
+
+            ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
+            ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
+            objectObjectOutputStream.writeObject(data);
+            objectObjectOutputStream.flush();
+            requestObjElement.setTextContent(Hex.encodeHexString(objectByteArrayOutputStream.toByteArray()));
+            objectObjectOutputStream.close();
 
             if (logger.isLoggable(Level.FINE))
             {
