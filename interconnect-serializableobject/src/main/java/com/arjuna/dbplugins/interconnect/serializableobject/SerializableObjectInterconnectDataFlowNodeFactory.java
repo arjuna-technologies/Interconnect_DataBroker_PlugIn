@@ -7,6 +7,7 @@ package com.arjuna.dbplugins.interconnect.serializableobject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import com.arjuna.databroker.data.DataFlowNode;
 import com.arjuna.databroker.data.DataFlowNodeFactory;
 import com.arjuna.databroker.data.DataSink;
@@ -24,6 +25,8 @@ import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.Serial
 
 public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFlowNodeFactory
 {
+    private static final Logger logger = Logger.getLogger(SerializableObjectInterconnectDataFlowNodeFactory.class.getName());
+
     public SerializableObjectInterconnectDataFlowNodeFactory(String name, Map<String, String> properties)
     {
         _name       = name;
@@ -99,9 +102,9 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
             else
                 throw new MissingMetaPropertyException("No metaproperties expected", "Type");
         }
-        else if ((metaProperties.size() == 1) && metaProperties.containsKey("Type"))
+        else if (dataFlowNodeClass.equals(DataSink.class))
         {
-            if (metaProperties.isEmpty())
+            if ((metaProperties.size() == 1) && metaProperties.containsKey("Type"))
             {
                 List<String> propertyNames = new LinkedList<String>();
 

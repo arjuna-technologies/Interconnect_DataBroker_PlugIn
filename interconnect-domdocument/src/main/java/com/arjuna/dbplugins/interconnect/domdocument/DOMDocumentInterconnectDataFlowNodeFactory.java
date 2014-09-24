@@ -100,9 +100,9 @@ public class DOMDocumentInterconnectDataFlowNodeFactory implements DataFlowNodeF
             else
                 throw new MissingMetaPropertyException("No metaproperties expected", "Type");
         }
-        else if ((metaProperties.size() == 1) && metaProperties.containsKey("Type"))
+        else if (dataFlowNodeClass.equals(DataSink.class))
         {
-            if (metaProperties.isEmpty())
+            if ((metaProperties.size() == 1) && metaProperties.containsKey("Type"))
             {
                 List<String> propertyNames = new LinkedList<String>();
 
