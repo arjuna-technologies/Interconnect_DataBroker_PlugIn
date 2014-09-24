@@ -13,7 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import javax.xml.namespace.QName;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
@@ -31,7 +30,6 @@ import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.soap.SOAPBinding;
 import org.apache.commons.codec.binary.Hex;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.CommonDefs;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectProviderJunction;
@@ -102,24 +100,26 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 logger.log(Level.FINE, "SerializableObjectProviderProvider.invoke: id = " + id);
                 if (id != null)
                 {
-                    Serializable serializableObject = _serializableObjectProviderJunction.withdraw(id);
-
                     requestEnvelope.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
 
-                    QName           requestBodyQName   = requestBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
-                    SOAPBodyElement requestBodyElement = requestBody.addBodyElement(requestBodyQName);
-                    SOAPElement     requestIdElement   = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
-                    SOAPElement     requestObjElement  = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+                    QName           responceBodyQName   = responceBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
+                    SOAPBodyElement responceBodyElement = responceBody.addBodyElement(responceBodyQName);
+                    SOAPElement     responceIdElement   = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
+                    SOAPElement     responceObjElement  = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
 
-                    ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
-                    ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
-                    objectObjectOutputStream.writeObject(data);
-                    objectObjectOutputStream.flush();
-                    requestObjElement.setTextContent(Hex.encodeHexString(objectByteArrayOutputStream.toByteArray()));
-                    objectObjectOutputStream.close();
+                    responceIdElement.setTextContent(id);
+
+                    Serializable serializableObject = _serializableObjectProviderJunction.withdraw(id);
 
                     if (serializableObject != null)
-                        responceBody.addDocument(document);
+                    {
+                        ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
+                        ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
+                        objectObjectOutputStream.writeObject(serializableObject);
+                        objectObjectOutputStream.flush();
+                        responceObjElement.setTextContent(Hex.encodeHexString(objectByteArrayOutputStream.toByteArray()));
+                        objectObjectOutputStream.close();
+                    }
                 }
 
                 if (logger.isLoggable(Level.FINER))
