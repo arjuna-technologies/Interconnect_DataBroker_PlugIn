@@ -25,8 +25,6 @@ import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.Serial
 
 public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFlowNodeFactory
 {
-    private static final Logger logger = Logger.getLogger(SerializableObjectInterconnectDataFlowNodeFactory.class.getName());
-
     public SerializableObjectInterconnectDataFlowNodeFactory(String name, Map<String, String> properties)
     {
         _name       = name;
@@ -85,7 +83,7 @@ public class SerializableObjectInterconnectDataFlowNodeFactory implements DataFl
                 String type = metaProperties.get("Type");
                 if (type.equals("Pull"))
                 {
-                    propertyNames.add(SerializableObjectPullDataSource.SERVICEURL_PROPERTYNAME);
+                    propertyNames.add(SerializableObjectPullDataSource.SERVICEROOTURL_PROPERTYNAME);
                     propertyNames.add(SerializableObjectPullDataSource.ENDPOINTPATH_PROPERTYNAME);
                     propertyNames.add(SerializableObjectPullDataSource.SCHEDULEDELAY_PROPERTYNAME);
                     propertyNames.add(SerializableObjectPullDataSource.SCHEDULEPERIOD_PROPERTYNAME);

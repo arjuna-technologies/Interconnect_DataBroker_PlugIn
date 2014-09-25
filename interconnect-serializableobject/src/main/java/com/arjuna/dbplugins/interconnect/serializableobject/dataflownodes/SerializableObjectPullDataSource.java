@@ -16,7 +16,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import javax.ejb.PostActivate;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
@@ -27,17 +27,17 @@ import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
-
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
 import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
+import com.arjuna.databroker.data.jee.annotation.PreDeactivated;
 
 public class SerializableObjectPullDataSource extends TimerTask implements DataSource
 {
     private static final Logger logger = Logger.getLogger(SerializableObjectPullDataSource.class.getName());
 
-    public static final String SERVICEURL_PROPERTYNAME     = "Service URL";
+    public static final String SERVICEROOTURL_PROPERTYNAME = "Service Root URL";
     public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
     public static final String SCHEDULEDELAY_PROPERTYNAME  = "Schedule Delay";
     public static final String SCHEDULEPERIOD_PROPERTYNAME = "Schedule Period";
@@ -49,15 +49,20 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
         _name          = name;
         _properties    = properties;
 
-        _serviceURL         = properties.get(SERVICEURL_PROPERTYNAME);
-        _endpointPath       = properties.get(ENDPOINTPATH_PROPERTYNAME);
-        _scheduleDelay      = Long.parseLong(properties.get(SCHEDULEDELAY_PROPERTYNAME));
-        _schedulePeriod     = Long.parseLong(properties.get(SCHEDULEPERIOD_PROPERTYNAME));
+        _serviceURL     = properties.get(SERVICEROOTURL_PROPERTYNAME);
+        _endpointPath   = properties.get(ENDPOINTPATH_PROPERTYNAME);
+        _scheduleDelay  = Long.parseLong(properties.get(SCHEDULEDELAY_PROPERTYNAME));
+        _schedulePeriod = Long.parseLong(properties.get(SCHEDULEPERIOD_PROPERTYNAME));
+    }
 
+    @PostActivate
+    public void activateTimer()
+    {
         _timer = new Timer(true);
         _timer.scheduleAtFixedRate(this, _scheduleDelay, _schedulePeriod);
     }
 
+    @PreDeactivated
     public void deactivateTimer()
     {
         _timer.cancel();
@@ -166,11 +171,6 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
 
         if (result != null)
             _dataProvider.produce(result);
-    }
-
-    public void stop()
-    {
-        cancel();
     }
 
     @Override
