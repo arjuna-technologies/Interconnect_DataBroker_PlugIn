@@ -7,7 +7,6 @@ package com.arjuna.dbplugins.interconnect.serializableobject;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
 import com.arjuna.databroker.data.DataFlowNode;
 import com.arjuna.databroker.data.DataFlowNodeFactory;
 import com.arjuna.databroker.data.DataSink;
