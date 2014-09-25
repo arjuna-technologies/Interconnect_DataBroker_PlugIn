@@ -155,7 +155,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
 
                 if (responceBodyChildren.hasNext())
                     logger.log(Level.WARNING, "More than one child in responce body");
-           }
+            }
             else
                 logger.log(Level.WARNING, "No child in responce body");
         }

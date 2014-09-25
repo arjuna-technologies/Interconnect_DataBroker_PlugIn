@@ -4,8 +4,11 @@
 
 package com.arjuna.dbplugins.interconnect.serializableobject.endpoint;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +26,7 @@ import javax.xml.ws.Service;
 import javax.xml.ws.ServiceMode;
 import javax.xml.ws.WebServiceProvider;
 import javax.xml.ws.soap.SOAPBinding;
+import org.apache.commons.codec.binary.Hex;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -70,26 +74,45 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
                 for (int requestNodeIndex = 0; requestNodeIndex < requestNodeList.getLength(); requestNodeIndex++)
                 {
                     Node requestNode = requestNodeList.item(requestNodeIndex);
-                    if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID.equals(requestNode.getNodeName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
+
+                    if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
                     {
                         if (id == null)
                             id = requestNode.getTextContent();
                         else
                             logger.log(Level.WARNING, "invoke: 'id' has already defined" + id);
                     }
-                    else if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT.equals(requestNode.getNodeName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
+                    else if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
                     {
                         if (serializableObject == null)
-                            serializableObject = requestNode.getTextContent();
+                        {
+                            try
+                            {
+                                byte[]               objectBytes                = Hex.decodeHex(requestNode.getTextContent().toCharArray());
+                                ByteArrayInputStream objectByteArrayInputStream = new ByteArrayInputStream(objectBytes);
+                                ObjectInputStream    objectObjectInputStream    = new ObjectInputStream(objectByteArrayInputStream);
+                                serializableObject = (Serializable) objectObjectInputStream.readObject();
+                                objectByteArrayInputStream.close();
+                            }
+                            catch (Throwable throwable)
+                            {
+                                logger.log(Level.WARNING, "invoke: unable to deserialize 'serializableObject'", throwable);
+                            }
+                        }
                         else
                             logger.log(Level.WARNING, "invoke: 'serializableObject' has already defined");
                     }
-                    else
-                        logger.log(Level.WARNING, "invoke: unexpercted parameter " + requestNode.getNodeName());
+                    else if (requestNode.getNodeType() == Node.TEXT_NODE)
+                    {
+                        if (! "".equals(requestNode.getNodeValue().trim()))
+                            logger.log(Level.WARNING, "invoke: unexperted text [" + requestNode.getNodeValue() + "]");
+                    }
+                    else if (requestNode.getNodeType() != Node.COMMENT_NODE)
+                        logger.log(Level.WARNING, "invoke: unexperted parameter " + requestNode.getNodeName());
                 }
 
-                logger.log(Level.FINE, "SerializableObjectAcceptorProvider.invoke: id = " + id);
-                if ((id != null) && (requestDocument != null))
+                logger.log(Level.FINE, "SerializableObjectAcceptorProvider.invoke: id = " + id + ", serializableObject = " + serializableObject);
+                if ((id != null) && (serializableObject != null))
                     _serializableObjectAcceptorDispatcher.dispatch(id, serializableObject);
 
                 MessageFactory responceFactory = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
