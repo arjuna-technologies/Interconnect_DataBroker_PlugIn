@@ -142,11 +142,11 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
 
             SOAPMessage responce = connection.call(request, _serviceURL+ "/" + CommonDefs.INTERCONNECT_SERVICE_PATH + "/" + CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER);
 
-            if (logger.isLoggable(Level.WARNING))
+            if (logger.isLoggable(Level.FINE))
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.WARNING, "SerializableObjectPullDataSource.run: responce: " + responceOutputStream.toString());
+                logger.log(Level.FINE, "SerializableObjectPullDataSource.run: responce: " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
 
