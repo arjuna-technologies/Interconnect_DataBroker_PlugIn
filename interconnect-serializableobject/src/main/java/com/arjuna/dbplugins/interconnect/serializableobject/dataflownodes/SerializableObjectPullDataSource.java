@@ -4,7 +4,9 @@
 
 package com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
@@ -16,7 +18,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.ejb.PostActivate;
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
@@ -27,10 +28,12 @@ import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+import org.apache.commons.codec.binary.Hex;
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
 import com.arjuna.databroker.data.jee.annotation.DataProviderInjection;
+import com.arjuna.databroker.data.jee.annotation.PostActivated;
 import com.arjuna.databroker.data.jee.annotation.PreDeactivated;
 
 public class SerializableObjectPullDataSource extends TimerTask implements DataSource
@@ -55,9 +58,11 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
         _schedulePeriod = Long.parseLong(properties.get(SCHEDULEPERIOD_PROPERTYNAME));
     }
 
-    @PostActivate
+    @PostActivated
     public void activateTimer()
     {
+        logger.log(Level.FINE, "SerializableObjectPullDataSource: - activateTimer:" + _name);
+
         _timer = new Timer(true);
         _timer.scheduleAtFixedRate(this, _scheduleDelay, _schedulePeriod);
     }
@@ -65,7 +70,10 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
     @PreDeactivated
     public void deactivateTimer()
     {
-        _timer.cancel();
+        logger.log(Level.FINE, "SerializableObjectPullDataSource - deactivateTimer:" + _name);
+
+        if (_timer != null)
+            _timer.cancel();
     }
 
     @Override
@@ -109,7 +117,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
     {
         logger.log(Level.FINE, "SerializableObjectPullDataSource.run");
 
-        Serializable result = null;
+        Serializable serializableObject = null;
         try
         {
             MessageFactory messageFactory   = MessageFactory.newInstance(SOAPConstants.SOAP_1_2_PROTOCOL);
@@ -134,43 +142,57 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
 
             SOAPMessage responce = connection.call(request, _serviceURL+ "/" + CommonDefs.INTERCONNECT_SERVICE_PATH + "/" + CommonDefs.INTERCONNECT_SERVICENAME_PROVIDER);
 
-            if (logger.isLoggable(Level.FINER))
+            if (logger.isLoggable(Level.WARNING))
             {
                 ByteArrayOutputStream responceOutputStream = new ByteArrayOutputStream();
                 responce.writeTo(responceOutputStream);
-                logger.log(Level.FINER, "SerializableObjectPullDataSource.run: responce: " + responceOutputStream.toString());
+                logger.log(Level.WARNING, "SerializableObjectPullDataSource.run: responce: " + responceOutputStream.toString());
                 responceOutputStream.close();
             }
 
-            SOAPPart     responcePart         = responce.getSOAPPart();
-            SOAPEnvelope responceEnvelope     = responcePart.getEnvelope();
-            SOAPBody     responceBody         = responceEnvelope.getBody();
-            Iterator<?>  responceBodyChildren = responceBody.getChildElements();
-
-            if (responceBodyChildren.hasNext())
+            if (responce != null)
             {
-                SOAPBodyElement dataElement = (SOAPBodyElement) responceBodyChildren.next();
-
-                if ((dataElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) &&  dataElement.getNodeName().equals(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_ID))
-                {
-                    result = dataElement.getValue();
-                }
-                else
-                    logger.log(Level.WARNING, "More than one child in responce body");
+                SOAPPart     responcePart         = responce.getSOAPPart();
+                SOAPEnvelope responceEnvelope     = responcePart.getEnvelope();
+                SOAPBody     responceBody         = responceEnvelope.getBody();
+                Iterator<?>  responceBodyChildren = responceBody.getChildElements();
 
                 if (responceBodyChildren.hasNext())
-                    logger.log(Level.WARNING, "More than one child in responce body");
+                {
+                    SOAPBodyElement dataElement = (SOAPBodyElement) responceBodyChildren.next();
+
+                    if ((dataElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) &&  dataElement.getNodeName().equals(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_SERIALIALIZEDOBJECT))
+                    {
+                        try
+                        {
+                            byte[]               objectBytes                = Hex.decodeHex(dataElement.getTextContent().toCharArray());
+                            ByteArrayInputStream objectByteArrayInputStream = new ByteArrayInputStream(objectBytes);
+                            ObjectInputStream    objectObjectInputStream    = new ObjectInputStream(objectByteArrayInputStream);
+                            serializableObject = (Serializable) objectObjectInputStream.readObject();
+                            objectByteArrayInputStream.close();
+                        }
+                        catch (Throwable throwable)
+                        {
+                            logger.log(Level.WARNING, "invoke: unable to deserialize 'serializableObject'", throwable);
+                        }
+                    }
+                    else
+                        logger.log(Level.WARNING, "More than one child in responce body");
+
+                    if (responceBodyChildren.hasNext())
+                        logger.log(Level.WARNING, "More than one child in responce body");
+                }
+                else
+                    logger.log(Level.WARNING, "No child in responce body");
             }
-            else
-                logger.log(Level.WARNING, "No child in responce body");
         }
         catch (Throwable throwable)
         {
             logger.log(Level.WARNING, "Problems with web service invoke", throwable);
         }
 
-        if (result != null)
-            _dataProvider.produce(result);
+        if (serializableObject != null)
+            _dataProvider.produce(serializableObject);
     }
 
     @Override

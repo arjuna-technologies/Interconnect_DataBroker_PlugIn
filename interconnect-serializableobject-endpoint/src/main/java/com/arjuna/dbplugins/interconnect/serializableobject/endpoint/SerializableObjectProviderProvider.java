@@ -100,19 +100,17 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 logger.log(Level.FINE, "SerializableObjectProviderProvider.invoke: id = " + id);
                 if (id != null)
                 {
-                    requestEnvelope.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
+                    responceBody.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
 
-                    QName           responceBodyQName   = responceBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
+                    QName           responceBodyQName   = responceBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_PROVIDER, "ic");
                     SOAPBodyElement responceBodyElement = responceBody.addBodyElement(responceBodyQName);
-                    SOAPElement     responceIdElement   = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
-                    SOAPElement     responceObjElement  = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
-
-                    responceIdElement.setTextContent(id);
 
                     Serializable serializableObject = _serializableObjectProviderJunction.withdraw(id);
 
                     if (serializableObject != null)
                     {
+                        SOAPElement responceObjElement = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+
                         ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
                         ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
                         objectObjectOutputStream.writeObject(serializableObject);
