@@ -76,7 +76,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 {
                     SOAPElement requestElement = requestElements.next();
 
-                    if ((requestElement.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_PROVIDEDATA.equals(requestElement.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestElement.getNamespaceURI()))
+                    if ((requestElement.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_PROVIDER_PROVIDEDATA_REQUEST.equals(requestElement.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestElement.getNamespaceURI()))
                     {
                         Iterator<SOAPElement> requestParameters = (Iterator<SOAPElement>) requestElement.getChildElements();
 
@@ -102,7 +102,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                 {
                     responceBody.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
 
-                    QName           responceBodyQName   = responceBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_PROVIDER, "ic");
+                    QName           responceBodyQName   = responceBody.createQName(CommonDefs.INTERCONNECT_PROVIDER_PROVIDEDATA_RESPONCE, "ic");
                     SOAPBodyElement responceBodyElement = responceBody.addBodyElement(responceBodyQName);
 
                     Serializable serializableObject = _serializableObjectProviderJunction.withdraw(id);
