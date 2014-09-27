@@ -125,8 +125,8 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
             SOAPPart       requestPart      = request.getSOAPPart();
             SOAPEnvelope   requestEnvelope  = requestPart.getEnvelope();
             SOAPBody       requestBody      = requestEnvelope.getBody();
-            SOAPElement    requestElement   = requestBody.addChildElement(CommonDefs.INTERCONNECT_OPERATIONNAME_PROVIDER_PROVIDEDATA, "ic", CommonDefs.INTERCONNECT_NAMESPACE);
-            SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID, "ic");
+            SOAPElement    requestElement   = requestBody.addChildElement(CommonDefs.INTERCONNECT_PROVIDER_PROVIDEDATA_REQUEST, "ic", CommonDefs.INTERCONNECT_NAMESPACE);
+            SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_PROVIDEDATA_PARAMETERNAME_ID, "ic");
             requestParameter.addTextNode(_endpointPath);
 
             if (logger.isLoggable(Level.FINER))
@@ -161,7 +161,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
                 {
                     SOAPBodyElement dataElement = (SOAPBodyElement) responceBodyChildren.next();
 
-                    if ((dataElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) &&  dataElement.getNodeName().equals(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_SERIALIALIZEDOBJECT))
+                    if ((dataElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) &&  dataElement.getNodeName().equals(CommonDefs.INTERCONNECT_PROVIDEDATA_RESULTNAME_SERIALIALIZEDOBJECT))
                     {
                         try
                         {

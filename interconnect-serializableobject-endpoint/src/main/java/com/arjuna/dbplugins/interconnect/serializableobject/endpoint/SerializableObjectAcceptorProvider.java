@@ -74,14 +74,14 @@ public class SerializableObjectAcceptorProvider implements Provider<SOAPMessage>
                 {
                     Node requestNode = requestNodeList.item(requestNodeIndex);
 
-                    if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
+                    if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_ACCEPTDATA_PARAMETERNAME_ID.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
                     {
                         if (id == null)
                             id = requestNode.getTextContent();
                         else
                             logger.log(Level.WARNING, "invoke: 'id' has already defined" + id);
                     }
-                    else if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
+                    else if ((requestNode.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_ACCEPTDATA_PARAMETERNAME_SERIALIALIZEDOBJECT.equals(requestNode.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestNode.getNamespaceURI()))
                     {
                         if (serializableObject == null)
                         {

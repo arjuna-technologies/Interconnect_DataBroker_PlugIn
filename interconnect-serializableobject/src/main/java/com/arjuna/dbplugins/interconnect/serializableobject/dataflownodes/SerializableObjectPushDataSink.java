@@ -99,10 +99,10 @@ public class SerializableObjectPushDataSink implements DataSink
             SOAPBody        requestBody           = requestEnvelope.getBody();
             requestEnvelope.addNamespaceDeclaration("ic", CommonDefs.INTERCONNECT_NAMESPACE);
 
-            QName           requestBodyQName   = requestBody.createQName(CommonDefs.INTERCONNECT_PORTNAME_ACCEPTOR, "ic");
+            QName           requestBodyQName   = requestBody.createQName(CommonDefs.INTERCONNECT_ACCEPTOR_ACCEPTDATA_REQUEST, "ic");
             SOAPBodyElement requestBodyElement = requestBody.addBodyElement(requestBodyQName);
-            SOAPElement     requestIdElement   = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_ID, "ic");
-            SOAPElement     requestObjElement  = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_RECEIVEDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+            SOAPElement     requestIdElement   = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_ACCEPTDATA_PARAMETERNAME_ID, "ic");
+            SOAPElement     requestObjElement  = requestBodyElement.addChildElement(CommonDefs.INTERCONNECT_ACCEPTDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
 
             requestIdElement.setTextContent(_endpointPath);
 

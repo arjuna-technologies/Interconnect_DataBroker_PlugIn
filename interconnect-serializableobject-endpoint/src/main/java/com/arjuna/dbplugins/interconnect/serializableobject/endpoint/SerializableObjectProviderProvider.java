@@ -84,7 +84,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
                         {
                             SOAPElement requestParameter = requestParameters.next();
 
-                            if ((requestParameter.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_ID.equals(requestParameter.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestParameter.getNamespaceURI()))
+                            if ((requestParameter.getNodeType() == Node.ELEMENT_NODE) && CommonDefs.INTERCONNECT_PROVIDEDATA_PARAMETERNAME_ID.equals(requestParameter.getLocalName()) && CommonDefs.INTERCONNECT_NAMESPACE.equals(requestParameter.getNamespaceURI()))
                                 id = requestParameter.getTextContent();
                         }
                     }
@@ -109,7 +109,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
 
                     if (serializableObject != null)
                     {
-                        SOAPElement responceObjElement = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_OBTAINDATA_PARAMETERNAME_SERIALIALIZEDOBJECT, "ic");
+                        SOAPElement responceObjElement = responceBodyElement.addChildElement(CommonDefs.INTERCONNECT_PROVIDEDATA_RESULTNAME_SERIALIALIZEDOBJECT, "ic");
 
                         ByteArrayOutputStream objectByteArrayOutputStream = new ByteArrayOutputStream();
                         ObjectOutputStream    objectObjectOutputStream    = new ObjectOutputStream(objectByteArrayOutputStream);
