@@ -17,7 +17,7 @@ public class PullTransferTest
     public void simplestPullTransfer()
     {
         Map<String, String> properties = new HashMap<String, String>();
-        properties.put(SerializableObjectPullDataSource.SERVICEROOTURL_PROPERTYNAME, "http://192.168.1.65");
+        properties.put(SerializableObjectPullDataSource.SERVICEROOTURL_PROPERTYNAME, "http://ouseburn:8080");
         properties.put(SerializableObjectPullDataSource.ENDPOINTPATH_PROPERTYNAME, "foo");
         properties.put(SerializableObjectPullDataSource.SCHEDULEDELAY_PROPERTYNAME, "1000");
         properties.put(SerializableObjectPullDataSource.SCHEDULEPERIOD_PROPERTYNAME, "2000");

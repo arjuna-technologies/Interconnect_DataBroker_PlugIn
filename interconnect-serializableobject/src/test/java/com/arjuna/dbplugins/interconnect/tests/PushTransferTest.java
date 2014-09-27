@@ -17,7 +17,7 @@ public class PushTransferTest
     public void simplestPushTransfer()
     {
         Map<String, String> properties = new HashMap<String, String>();
-        properties.put(SerializableObjectPushDataSink.SERVICEROOTURL_PROPERTYNAME, "http://192.168.1.65");
+        properties.put(SerializableObjectPushDataSink.SERVICEROOTURL_PROPERTYNAME, "http://ouseburn:8080");
         properties.put(SerializableObjectPushDataSink.ENDPOINTPATH_PROPERTYNAME, "foo");
 
         SerializableObjectPushDataSink serializableObjectPushDataSink = new SerializableObjectPushDataSink("Serializable Object Provider Data Sink", properties);
