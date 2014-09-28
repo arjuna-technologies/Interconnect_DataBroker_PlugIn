@@ -26,6 +26,6 @@ public class PushTransferTest
 
         serializableObjectPushDataSink.consume("Data String");
 
-        DataFlowNodeLifeCycleControl.removeDataFlowNode(null, serializableObjectPushDataSink.getName());
+        DataFlowNodeLifeCycleControl.removeDataFlowNode(serializableObjectPushDataSink);
     }
 }
