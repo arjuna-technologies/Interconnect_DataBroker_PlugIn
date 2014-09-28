@@ -18,6 +18,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.xml.soap.MessageFactory;
 import javax.xml.soap.SOAPBody;
 import javax.xml.soap.SOAPBodyElement;
@@ -28,7 +29,9 @@ import javax.xml.soap.SOAPElement;
 import javax.xml.soap.SOAPEnvelope;
 import javax.xml.soap.SOAPMessage;
 import javax.xml.soap.SOAPPart;
+
 import org.apache.commons.codec.binary.Hex;
+
 import com.arjuna.databroker.data.DataFlow;
 import com.arjuna.databroker.data.DataProvider;
 import com.arjuna.databroker.data.DataSource;
@@ -129,11 +132,11 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
             SOAPElement    requestParameter = requestElement.addChildElement(CommonDefs.INTERCONNECT_PROVIDEDATA_PARAMETERNAME_ID, "ic");
             requestParameter.addTextNode(_endpointPath);
 
-            if (logger.isLoggable(Level.FINER))
+            if (logger.isLoggable(Level.FINE))
             {
                 ByteArrayOutputStream requestOutputStream = new ByteArrayOutputStream();
                 request.writeTo(requestOutputStream);
-                logger.log(Level.FINER, "SerializableObjectPullDataSource.run: request = " + requestOutputStream.toString());
+                logger.log(Level.FINE, "SerializableObjectPullDataSource.run: request = " + requestOutputStream.toString());
                 requestOutputStream.close();
             }
 
@@ -152,38 +155,46 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
 
             if (responce != null)
             {
-                SOAPPart     responcePart         = responce.getSOAPPart();
-                SOAPEnvelope responceEnvelope     = responcePart.getEnvelope();
-                SOAPBody     responceBody         = responceEnvelope.getBody();
-                Iterator<?>  responceBodyChildren = responceBody.getChildElements();
+                SOAPPart              responcePart        = responce.getSOAPPart();
+                SOAPEnvelope          responceEnvelope    = responcePart.getEnvelope();
+                SOAPBody              responceBody        = responceEnvelope.getBody();
 
-                if (responceBodyChildren.hasNext())
+                Iterator<SOAPElement> responceBodyElements = (Iterator<SOAPElement>) responceBody.getChildElements();
+
+                while (responceBodyElements.hasNext())
                 {
-                    SOAPBodyElement dataElement = (SOAPBodyElement) responceBodyChildren.next();
+                    SOAPBodyElement responceBodyElement = (SOAPBodyElement) responceBodyElements.next();
 
-                    if ((dataElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) &&  dataElement.getNodeName().equals(CommonDefs.INTERCONNECT_PROVIDEDATA_RESULTNAME_SERIALIALIZEDOBJECT))
+                    if ((responceBodyElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) && responceBodyElement.getLocalName().equals(CommonDefs.INTERCONNECT_PROVIDER_PROVIDEDATA_RESPONCE) && CommonDefs.INTERCONNECT_NAMESPACE.equals(responceBodyElement.getNamespaceURI()))
                     {
-                        try
+                        Iterator<SOAPElement> responceElements = (Iterator<SOAPElement>) responceBodyElement.getChildElements();
+
+                        while (responceElements.hasNext())
                         {
-                            byte[]               objectBytes                = Hex.decodeHex(dataElement.getTextContent().toCharArray());
-                            ByteArrayInputStream objectByteArrayInputStream = new ByteArrayInputStream(objectBytes);
-                            ObjectInputStream    objectObjectInputStream    = new ObjectInputStream(objectByteArrayInputStream);
-                            serializableObject = (Serializable) objectObjectInputStream.readObject();
-                            objectByteArrayInputStream.close();
-                        }
-                        catch (Throwable throwable)
-                        {
-                            logger.log(Level.WARNING, "invoke: unable to deserialize 'serializableObject'", throwable);
+                            SOAPElement responceElement = (SOAPBodyElement) responceElements.next();
+
+                            if ((responceElement.getNodeType() == SOAPBodyElement.ELEMENT_NODE) && responceElement.getLocalName().equals(CommonDefs.INTERCONNECT_PROVIDEDATA_RESULTNAME_SERIALIALIZEDOBJECT) && CommonDefs.INTERCONNECT_NAMESPACE.equals(responceBodyElement.getNamespaceURI()))
+                            {
+                                try
+                                {
+                                    byte[]               objectBytes                = Hex.decodeHex(responceElement.getTextContent().toCharArray());
+                                    ByteArrayInputStream objectByteArrayInputStream = new ByteArrayInputStream(objectBytes);
+                                    ObjectInputStream    objectObjectInputStream    = new ObjectInputStream(objectByteArrayInputStream);
+                                    serializableObject = (Serializable) objectObjectInputStream.readObject();
+                                    objectByteArrayInputStream.close();
+                                }
+                                catch (Throwable throwable)
+                                {
+                                    logger.log(Level.WARNING, "invoke: unable to deserialize 'serializableObject'", throwable);
+                                }
+                            }
+                            else
+                                logger.log(Level.WARNING, "Unexperted result: " + responceElement.getNodeName());
                         }
                     }
                     else
-                        logger.log(Level.WARNING, "More than one child in responce body");
-
-                    if (responceBodyChildren.hasNext())
-                        logger.log(Level.WARNING, "More than one child in responce body");
+                        logger.log(Level.WARNING, "Unexpected responce: " + responceBodyElement.getNodeName());
                 }
-                else
-                    logger.log(Level.WARNING, "No child in responce body");
             }
         }
         catch (Throwable throwable)
