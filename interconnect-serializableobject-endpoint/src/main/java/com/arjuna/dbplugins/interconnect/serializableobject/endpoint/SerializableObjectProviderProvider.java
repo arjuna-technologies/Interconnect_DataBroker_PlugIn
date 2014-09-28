@@ -64,14 +64,13 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
 
             if (_serializableObjectProviderJunction != null)
             {
-                String id = null;
-
-                SOAPPart              requestPart     = request.getSOAPPart();
-                SOAPEnvelope          requestEnvelope = requestPart.getEnvelope();
-                SOAPBody              requestBody     = requestEnvelope.getBody();
+                SOAPPart     requestPart     = request.getSOAPPart();
+                SOAPEnvelope requestEnvelope = requestPart.getEnvelope();
+                SOAPBody     requestBody     = requestEnvelope.getBody();
 
                 Iterator<SOAPElement> requestElements = (Iterator<SOAPElement>) requestBody.getChildElements();
 
+                String id = null;
                 while (requestElements.hasNext())
                 {
                     SOAPElement requestElement = requestElements.next();
