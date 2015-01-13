@@ -41,6 +41,11 @@ public class DOMDocumentPullDataSource extends TimerTask implements DataSource
     public static final String SCHEDULEDELAY_PROPERTYNAME  = "Schedule Delay";
     public static final String SCHEDULEPERIOD_PROPERTYNAME = "Schedule Period";
 
+    public DOMDocumentPullDataSource()
+    {
+        logger.log(Level.FINE, "DOMDocumentPullDataSource");
+    }
+
     public DOMDocumentPullDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "DOMDocumentPullDataSource: " + name + ", " + properties);

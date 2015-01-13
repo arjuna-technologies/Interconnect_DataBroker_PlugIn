@@ -24,6 +24,11 @@ public class SerializableObjectAcceptorDataSource implements DataSource
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
+    public SerializableObjectAcceptorDataSource()
+    {
+        logger.log(Level.FINE, "SerializableObjectAcceptorDataSource");
+    }
+
     public SerializableObjectAcceptorDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "SerializableObjectAcceptorDataSource: " + name + ", " + properties);

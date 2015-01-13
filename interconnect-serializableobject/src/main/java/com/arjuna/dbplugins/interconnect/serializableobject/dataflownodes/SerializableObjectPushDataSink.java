@@ -39,6 +39,11 @@ public class SerializableObjectPushDataSink implements DataSink
     public static final String SERVICEROOTURL_PROPERTYNAME = "Service Root URL";
     public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
 
+    public SerializableObjectPushDataSink()
+    {
+        logger.log(Level.FINE, "SerializableObjectPushDataSink");
+    }
+
     public SerializableObjectPushDataSink(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "SerializableObjectPushDataSink: " + name + ", " + properties);

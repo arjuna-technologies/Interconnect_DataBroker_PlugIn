@@ -48,6 +48,11 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
     public static final String SCHEDULEDELAY_PROPERTYNAME  = "Schedule Delay";
     public static final String SCHEDULEPERIOD_PROPERTYNAME = "Schedule Period";
 
+    public SerializableObjectPullDataSource()
+    {
+        logger.log(Level.FINE, "SerializableObjectPullDataSource");
+    }
+
     public SerializableObjectPullDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "SerializableObjectPullDataSource: " + name + ", " + properties);

@@ -24,6 +24,11 @@ public class SerializableObjectProviderDataSink implements DataSink
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
+    public SerializableObjectProviderDataSink()
+    {
+        logger.log(Level.FINE, "SerializableObjectProviderDataSink");
+    }
+
     public SerializableObjectProviderDataSink(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "SerializableObjectProviderDataSink: " + name + ", " + properties);

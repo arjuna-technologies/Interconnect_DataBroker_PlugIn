@@ -24,6 +24,11 @@ public class DOMDocumentProviderDataSink implements DataSink
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
+    public DOMDocumentProviderDataSink()
+    {
+        logger.log(Level.FINE, "DOMDocumentProviderDataSink");
+    }
+
     public DOMDocumentProviderDataSink(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "DOMDocumentProviderDataSink: " + name + ", " + properties);

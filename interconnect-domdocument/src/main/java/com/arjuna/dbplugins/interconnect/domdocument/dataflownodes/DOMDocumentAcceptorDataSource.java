@@ -24,6 +24,11 @@ public class DOMDocumentAcceptorDataSource implements DataSource
 
     public static final String ENDPOINTPATH_PROPERTYNAME = "Endpoint Path";
 
+    public DOMDocumentAcceptorDataSource()
+    {
+        logger.log(Level.FINE, "DOMDocumentAcceptorDataSource");
+    }
+
     public DOMDocumentAcceptorDataSource(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "DOMDocumentAcceptorDataSource: " + name + ", " + properties);

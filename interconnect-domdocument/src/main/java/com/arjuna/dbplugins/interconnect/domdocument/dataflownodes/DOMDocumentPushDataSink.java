@@ -35,6 +35,11 @@ public class DOMDocumentPushDataSink implements DataSink
     public static final String SERVICEROOTURL_PROPERTYNAME = "Service Root URL";
     public static final String ENDPOINTPATH_PROPERTYNAME   = "Endpoint Path";
 
+    public DOMDocumentPushDataSink()
+    {
+        logger.log(Level.FINE, "DOMDocumentPushDataSink");
+    }
+
     public DOMDocumentPushDataSink(String name, Map<String, String> properties)
     {
         logger.log(Level.FINE, "DOMDocumentPushDataSink: " + name + ", " + properties);
