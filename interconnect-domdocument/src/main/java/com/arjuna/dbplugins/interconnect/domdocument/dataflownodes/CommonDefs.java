@@ -17,6 +17,6 @@ public class CommonDefs
     public static final String INTERCONNECT_SERVICENAME_PROVIDER               = "ProviderService";
     public static final String INTERCONNECT_PORTNAME_PROVIDER                  = "ProviderPort";
     public static final String INTERCONNECT_OPERATIONNAME_PROVIDER_OBTAINDATA  = "ObtainData";
-    
+
     public static final String INTERCONNECT_PARAMETERNAME_ID                   = "id";
 }

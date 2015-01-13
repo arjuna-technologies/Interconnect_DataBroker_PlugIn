@@ -120,7 +120,7 @@ public class DOMDocumentProviderProvider implements Provider<SOAPMessage>
         {
             logger.log(Level.WARNING, "DOMDocumentProviderProvider ", ioException);
         }
-        
+
         return null;
     }
 

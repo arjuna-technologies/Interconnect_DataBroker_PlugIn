@@ -163,7 +163,7 @@ public class DOMDocumentPullDataSource extends TimerTask implements DataSource
         Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
 
         dataProviderDataClasses.add(Document.class);
-        
+
         return dataProviderDataClasses;
     }
 
@@ -183,7 +183,7 @@ public class DOMDocumentPullDataSource extends TimerTask implements DataSource
     private Long   _schedulePeriod;
 
     private Timer _timer;
-    
+
     private DataFlow               _dataFlow;
     private String                 _name;
     private Map<String, String>    _properties;

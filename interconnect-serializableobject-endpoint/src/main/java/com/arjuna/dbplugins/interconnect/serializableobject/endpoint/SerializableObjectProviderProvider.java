@@ -138,7 +138,7 @@ public class SerializableObjectProviderProvider implements Provider<SOAPMessage>
         {
             logger.log(Level.WARNING, "SerializableObjectProviderProvider ", ioException);
         }
-        
+
         return null;
     }
 

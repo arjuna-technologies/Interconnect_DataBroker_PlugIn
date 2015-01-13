@@ -32,7 +32,7 @@ public class DOMDocumentProviderDataSink implements DataSink
         _properties = properties;
 
         _endpointId = properties.get(ENDPOINTPATH_PROPERTYNAME);
-        
+
         try
         {
             _domDocumentProviderJunction = (DOMDocumentProviderJunction) new InitialContext().lookup("java:global/interconnect-plugin-ear-1.0.0p1m1/interconnect-domdocument-1.0.0p1m1/DOMDocumentProviderJunction");

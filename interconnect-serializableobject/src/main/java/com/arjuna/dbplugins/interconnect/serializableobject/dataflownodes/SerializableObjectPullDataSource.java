@@ -212,7 +212,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
         Set<Class<?>> dataProviderDataClasses = new HashSet<Class<?>>();
 
         dataProviderDataClasses.add(Serializable.class);
-        
+
         return dataProviderDataClasses;
     }
 
@@ -232,7 +232,7 @@ public class SerializableObjectPullDataSource extends TimerTask implements DataS
     private Long   _schedulePeriod;
 
     private Timer _timer;
-    
+
     private DataFlow                   _dataFlow;
     private String                     _name;
     private Map<String, String>        _properties;
