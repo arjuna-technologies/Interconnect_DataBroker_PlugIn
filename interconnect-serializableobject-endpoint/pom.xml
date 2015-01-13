@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.arjuna.dbplugins.interconnect</groupId>
         <artifactId>interconnect-plugin-parent</artifactId>
-        <version>1.0.0p1m1</version>
+        <version>1.0.0p1m2</version>
     </parent>
 
     <artifactId>interconnect-serializableobject-endpoint</artifactId>
@@ -28,7 +28,7 @@
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-serializableobject</artifactId>
-            <version>1.0.0p1m1</version>
+            <version>1.0.0p1m2</version>
             <scope>provided</scope>
             <type>ejb</type>
         </dependency>
