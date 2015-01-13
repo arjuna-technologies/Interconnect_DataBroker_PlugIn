@@ -6,16 +6,22 @@ package com.arjuna.dbplugins.interconnect.tests;
 
 import java.util.Map;
 import java.util.HashMap;
+import java.util.UUID;
+
 import org.junit.Test;
-import com.arjuna.databroker.data.jee.DataFlowNodeLifeCycleControl;
+
 // import static org.junit.Assert.*;
+import com.arjuna.databroker.data.core.DataFlowNodeLifeCycleControl;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectPullDataSource;
+import com.arjuna.dbutilities.testsupport.dataflownodes.lifecycle.TestJEEDataFlowNodeLifeCycleControl;
 
 public class PullTransferTest
 {
     @Test
     public void simplestPullTransfer()
     {
+        DataFlowNodeLifeCycleControl dataFlowNodeLifeCycleControl = new TestJEEDataFlowNodeLifeCycleControl();
+
         Map<String, String> properties = new HashMap<String, String>();
         properties.put(SerializableObjectPullDataSource.SERVICEROOTURL_PROPERTYNAME, "http://ouseburn:8080");
         properties.put(SerializableObjectPullDataSource.ENDPOINTPATH_PROPERTYNAME, "foo");
@@ -24,7 +30,7 @@ public class PullTransferTest
 
         SerializableObjectPullDataSource serializableObjectPullDataSource = new SerializableObjectPullDataSource("Serializable Object Provider Data Sink", properties);
 
-        DataFlowNodeLifeCycleControl.processCreatedDataFlowNode(serializableObjectPullDataSource, null);
+        dataFlowNodeLifeCycleControl.completeCreationAndActivateDataFlowNode(UUID.randomUUID().toString(), serializableObjectPullDataSource, null);
 
         try
         {
@@ -34,6 +40,6 @@ public class PullTransferTest
         {
         }
 
-        DataFlowNodeLifeCycleControl.removeDataFlowNode(serializableObjectPullDataSource);
+        dataFlowNodeLifeCycleControl.removeDataFlowNode(serializableObjectPullDataSource);
     }
 }
