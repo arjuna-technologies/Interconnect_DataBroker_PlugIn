@@ -7,14 +7,15 @@ package com.arjuna.dbplugins.interconnect.tests;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.UUID;
-
+import org.jboss.arquillian.junit.Arquillian;
 import org.junit.Test;
-
-// import static org.junit.Assert.*;
+import org.junit.runner.RunWith;
+import static org.junit.Assert.*;
 import com.arjuna.databroker.data.core.DataFlowNodeLifeCycleControl;
 import com.arjuna.dbplugins.interconnect.serializableobject.dataflownodes.SerializableObjectPullDataSource;
 import com.arjuna.dbutilities.testsupport.dataflownodes.lifecycle.TestJEEDataFlowNodeLifeCycleControl;
 
+@RunWith(Arquillian.class)
 public class PullTransferTest
 {
     @Test
