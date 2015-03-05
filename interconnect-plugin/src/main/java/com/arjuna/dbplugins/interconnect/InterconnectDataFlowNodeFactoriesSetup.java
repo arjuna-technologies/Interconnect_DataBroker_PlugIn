@@ -12,6 +12,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import com.arjuna.databroker.data.DataFlowNodeFactory;
 import com.arjuna.databroker.data.DataFlowNodeFactoryInventory;
+import com.arjuna.dbplugins.interconnect.binary.BinaryInterconnectDataFlowNodeFactory;
 import com.arjuna.dbplugins.interconnect.domdocument.DOMDocumentInterconnectDataFlowNodeFactory;
 import com.arjuna.dbplugins.interconnect.serializableobject.SerializableObjectInterconnectDataFlowNodeFactory;
 
@@ -24,9 +25,11 @@ public class InterconnectDataFlowNodeFactoriesSetup
     {
         DataFlowNodeFactory domDocumentInterconnectDataFlowNodeFactory        = new DOMDocumentInterconnectDataFlowNodeFactory("DOM Document Interconnect Data Flow Node Factories", Collections.<String, String>emptyMap());
         DataFlowNodeFactory serializableObjectInterconnectDataFlowNodeFactory = new SerializableObjectInterconnectDataFlowNodeFactory("Serializable Object Interconnect Data Flow Node Factories", Collections.<String, String>emptyMap());
+        DataFlowNodeFactory binaryInterconnectDataFlowNodeFactory             = new BinaryInterconnectDataFlowNodeFactory("Binary Interconnect Data Flow Node Factories", Collections.<String, String>emptyMap());
 
         _dataFlowNodeFactoryInventory.addDataFlowNodeFactory(domDocumentInterconnectDataFlowNodeFactory);
         _dataFlowNodeFactoryInventory.addDataFlowNodeFactory(serializableObjectInterconnectDataFlowNodeFactory);
+        _dataFlowNodeFactoryInventory.addDataFlowNodeFactory(binaryInterconnectDataFlowNodeFactory);
     }
 
     @PreDestroy
@@ -34,6 +37,7 @@ public class InterconnectDataFlowNodeFactoriesSetup
     {
         _dataFlowNodeFactoryInventory.removeDataFlowNodeFactory("DOM Document Interconnect Data Flow Node Factories");
         _dataFlowNodeFactoryInventory.removeDataFlowNodeFactory("Serializable Object Interconnect Data Flow Node Factories");
+        _dataFlowNodeFactoryInventory.removeDataFlowNodeFactory("Binary Interconnect Data Flow Node Factories");
     }
 
     @EJB(lookup="java:global/databroker/data-core-jee/DataFlowNodeFactoryInventory")

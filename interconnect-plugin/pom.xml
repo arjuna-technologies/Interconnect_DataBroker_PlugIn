@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.arjuna.dbplugins.interconnect</groupId>
         <artifactId>interconnect-plugin-parent</artifactId>
-        <version>1.0.0p1m2</version>
+        <version>1.0.0p1m3</version>
     </parent>
 
     <artifactId>interconnect-plugin</artifactId>
@@ -34,13 +34,19 @@
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-domdocument</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-serializableobject</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-binary</artifactId>
+            <version>1.0.0p1m3</version>
             <type>ejb</type>
         </dependency>
     </dependencies>

@@ -10,7 +10,7 @@
     <parent>
         <groupId>com.arjuna.dbplugins.interconnect</groupId>
         <artifactId>interconnect-plugin-parent</artifactId>
-        <version>1.0.0p1m2</version>
+        <version>1.0.0p1m3</version>
     </parent>
 
     <artifactId>interconnect-plugin-ear</artifactId>
@@ -28,31 +28,43 @@
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-plugin</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-domdocument</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-domdocument-endpoint</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
             <type>war</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-serializableobject</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
             <type>ejb</type>
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
             <artifactId>interconnect-serializableobject-endpoint</artifactId>
-            <version>1.0.0p1m2</version>
+            <version>1.0.0p1m3</version>
+            <type>war</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-binary</artifactId>
+            <version>1.0.0p1m3</version>
+            <type>ejb</type>
+        </dependency>
+        <dependency>
+            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+            <artifactId>interconnect-binary-endpoint</artifactId>
+            <version>1.0.0p1m3</version>
             <type>war</type>
         </dependency>
     </dependencies>
@@ -82,6 +94,10 @@
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
                             <artifactId>interconnect-serializableobject</artifactId>
                         </ejbModule>
+                        <ejbModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-binary</artifactId>
+                        </ejbModule>
                         <webModule>
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
                             <artifactId>interconnect-domdocument-endpoint</artifactId>
@@ -91,6 +107,11 @@
                             <groupId>com.arjuna.dbplugins.interconnect</groupId>
                             <artifactId>interconnect-serializableobject-endpoint</artifactId>
                             <contextRoot>serializableobject_interconnect</contextRoot>
+                        </webModule>
+                        <webModule>
+                            <groupId>com.arjuna.dbplugins.interconnect</groupId>
+                            <artifactId>interconnect-binary-endpoint</artifactId>
+                            <contextRoot>binary_interconnect</contextRoot>
                         </webModule>
                     </modules>
                 </configuration>

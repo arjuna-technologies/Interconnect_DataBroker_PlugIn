@@ -13,11 +13,11 @@
         <version>1.0.0p1m3</version>
     </parent>
 
-    <artifactId>interconnect-serializableobject-endpoint</artifactId>
+    <artifactId>interconnect-binary-endpoint</artifactId>
 
     <packaging>war</packaging>
 
-    <name>Interconnect Serializable Object Endpoint</name>
+    <name>Interconnect Binary Endpoint</name>
 
     <dependencies>
         <dependency>
@@ -27,15 +27,10 @@
         </dependency>
         <dependency>
             <groupId>com.arjuna.dbplugins.interconnect</groupId>
-            <artifactId>interconnect-serializableobject</artifactId>
+            <artifactId>interconnect-binary</artifactId>
             <version>1.0.0p1m3</version>
             <scope>provided</scope>
             <type>ejb</type>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

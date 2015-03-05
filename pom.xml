@@ -9,7 +9,7 @@
 
     <groupId>com.arjuna.dbplugins.interconnect</groupId>
     <artifactId>interconnect-plugin-parent</artifactId>
-    <version>1.0.0p1m2</version>
+    <version>1.0.0p1m3</version>
 
     <packaging>pom</packaging>
 
@@ -33,17 +33,19 @@
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!-- JBossAS-7.1.1.Final
+        <!-- JBossAS-7.1.1.Final -->
         <ejb-api.version>3.1</ejb-api.version>
         <jee.version>6</jee.version>
-        -->
-        <!-- WildFly-8.1.0.Final -->
+        <!-- -->
+        <!-- WildFly-8.1.0.Final
         <ejb-api.version>3.2</ejb-api.version>
         <jee.version>7</jee.version>
-        <!--  -->
+        -->
     </properties>
 
     <modules>
+        <module>interconnect-binary</module>
+        <module>interconnect-binary-endpoint</module>
         <module>interconnect-domdocument</module> 
         <module>interconnect-domdocument-endpoint</module>
         <module>interconnect-serializableobject</module> 
@@ -61,7 +63,7 @@
 
     <dependencyManagement>
         <dependencies>
-             <!-- JBossAS-7.1.1.Final
+             <!-- JBossAS-7.1.1.Final -->
             <dependency>
                 <groupId>org.jboss.as</groupId>
                 <artifactId>jboss-as-dist</artifactId>
@@ -69,8 +71,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            -->
-            <!-- WildFly-8.1.0.Final -->
+            <!-- -->
+            <!-- WildFly-8.1.0.Final
             <dependency>
                 <groupId>org.wildfly</groupId>
                 <artifactId>wildfly-dist</artifactId>
@@ -78,6 +80,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            -->
         </dependencies>
     </dependencyManagement>
 
